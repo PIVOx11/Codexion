@@ -1,8 +1,8 @@
 CC = cc
-CFLAGS =  -Wall -Wextra -Werror -pthread
+CFLAGS = 
 NAME = codexion
 HEADERE = coders/codexion.h
-SRC = coders/codexion.c coders/parsing_stage.c coders/time.c
+SRC = coders/codexion.c coders/parsing_stage.c coders/time.c coders/init_stage.c coders/error_stage.c
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)

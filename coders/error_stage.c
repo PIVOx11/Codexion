@@ -1,26 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   time.c                                             :+:      :+:    :+:   */
+/*   error_stage.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/15 17:56:17 by blidriss          #+#    #+#             */
-/*   Updated: 2026/05/15 19:05:33 by blidriss         ###   ########.fr       */
+/*   Created: 2026/05/15 17:56:00 by blidriss          #+#    #+#             */
+/*   Updated: 2026/05/15 19:10:22 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-long    ft_gettime()
-{
-    struct timeval t;
-    gettimeofday(&t, NULL);
-    return ((t.tv_sec * 1000) + (t.tv_usec / 1000));
-}
 
-
-long task_time(long time)
+void free_all(t_data *data)
 {
-    return (ft_gettime() - time);
+    if (data->coders)
+        free(data->coders);
+    if (data->dongles)
+        free(data->dongles);
 }

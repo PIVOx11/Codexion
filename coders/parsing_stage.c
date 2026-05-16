@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing_stage.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/05/15 16:21:30 by blidriss          #+#    #+#             */
+/*   Updated: 2026/05/16 08:57:18 by blidriss         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "codexion.h"
 
 
@@ -10,6 +22,7 @@ void set_arg(char **arg, t_data *data)
     data->refactor_time = atoi(arg[5]);
     data->compile_req = atoi(arg[6]);
     data->cold_down_time = atoi(arg[7]);
+    data->is_burn_out = false;
 }
 
 void parse_arg(t_data *data, char **arg)
@@ -26,7 +39,8 @@ void parse_arg(t_data *data, char **arg)
         while(arg[i][j])
         {
             if (arg[i][j] < '0' || arg[i][j] > '9')
-                ft_error("Argument number invalid");
+                if (arg[i][j] != '+')
+                    ft_error("Argument number invalid");
             j++;
         }
         if (atoi(arg[i]) == 0)
