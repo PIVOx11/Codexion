@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 17:55:58 by blidriss          #+#    #+#             */
-/*   Updated: 2026/05/15 20:25:57 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/05/16 09:00:06 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,6 @@ void    ft_error(char *err)
 	exit(2);
 }
 
-void    change(t_data *data)
-{
-    int i = -1;
-
-    while (++i < data->coder_count)
-        data->coders[i].id = 5;
-}
 int     main(int ac, char **av)
 {
     t_data      data;
@@ -34,18 +27,9 @@ int     main(int ac, char **av)
         ft_error("All argument are mandatory");
     parse_arg(&data, av);
     full_init(&data);
-    // init_threads(&data);
-    // free_all(&data); // if you want to free befor you leave :)
+    init_threads(&data);
+    free_all(&data); // if you want to free befor you leave :)
 
-    int i = -1;
-
-    change(&data);
-    while(++i < data.coder_count)
-    {
-        printf("codeer id: %d, coder compile: %d\n", 
-        data.coders[i].id,
-        data.coders[i].compile_count);
-    }
 }
 
 
