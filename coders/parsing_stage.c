@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 16:21:30 by blidriss          #+#    #+#             */
-/*   Updated: 2026/05/16 08:57:18 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/05/16 09:42:08 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void set_arg(char **arg, t_data *data)
     data->refactor_time = atoi(arg[5]);
     data->compile_req = atoi(arg[6]);
     data->cold_down_time = atoi(arg[7]);
-    data->is_burn_out = false;
+    data->is_burn_out = FALSE;
 }
 
 void parse_arg(t_data *data, char **arg)

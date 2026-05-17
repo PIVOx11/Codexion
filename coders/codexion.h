@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 17:56:07 by blidriss          #+#    #+#             */
-/*   Updated: 2026/05/16 08:55:52 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/05/17 10:49:52 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 #include <sys/time.h>
 #include <unistd.h>
 
-#define false 0
-#define true 1
+#define FALSE 0
+#define TRUE 1
 
 typedef pthread_mutex_t mutex;
 typedef struct s_data t_data;
@@ -43,8 +43,9 @@ typedef struct s_coder
     int         is_compile_finish; //Flage to detect if it complite required compile.
     long        last_time_compile;
     t_dongle    *left_dongle;
-    t_dongle    *left_right;
+    t_dongle    *right_dongle;
     pthread_t   thread_id;
+    mutex       t;
     t_data      *data;
 
 }   t_coder;
@@ -61,6 +62,9 @@ struct s_data
     int         cold_down_time;
     int         is_burn_out; //Flage to detect if a coder is burn_out.
     char    *scheduler;
+    long    start_semulation;
+    int     is_ready;
+    mutex   read_data;
     t_dongle *dongles;
     t_coder  *coders;
 };
@@ -74,5 +78,14 @@ long   ft_gettime();
 int    full_init(t_data *data);
 void   free_all(t_data *data);
 void init_threads(t_data *data);
+void *semulation(void *co);
+void compile(t_coder *coder);
+void debug(t_coder *coder);
+void refactol(t_coder *coder);
+
+
+
+
+
 
 #endif

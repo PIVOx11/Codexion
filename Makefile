@@ -2,7 +2,8 @@ CC = cc
 CFLAGS = 
 NAME = codexion
 HEADERE = coders/codexion.h
-SRC = coders/codexion.c coders/parsing_stage.c coders/time.c coders/init_stage.c coders/error_stage.c
+SRC = coders/codexion.c coders/parsing_stage.c coders/time.c coders/init_stage.c coders/error_stage.c \
+coders/simulation_stage.c coders/action_stage.c
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
