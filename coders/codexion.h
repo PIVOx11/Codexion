@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 17:56:07 by blidriss          #+#    #+#             */
-/*   Updated: 2026/05/17 10:49:52 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/05/18 11:07:38 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,12 @@ typedef struct s_coder
 {
     int         id;
     int         compile_count;
-    int         is_compile_finish; //Flage to detect if it complite required compile.
-    long        last_time_compile;
+    long        last_compile_start;
     t_dongle    *left_dongle;
     t_dongle    *right_dongle;
     pthread_t   thread_id;
     mutex       t;
+    int         coder_die;
     t_data      *data;
 
 }   t_coder;
@@ -58,13 +58,14 @@ struct s_data
     int         debug_time;
     int         refactor_time;
     int         compile_req;
-    int         is_semulation_over;
     int         cold_down_time;
-    int         is_burn_out; //Flage to detect if a coder is burn_out.
+    int         is_semulation_over;
     char    *scheduler;
     long    start_semulation;
     int     is_ready;
-    mutex   read_data;
+    int     compile_done;
+    pthread_t monitor;
+    mutex   use_data;
     t_dongle *dongles;
     t_coder  *coders;
 };
@@ -77,14 +78,12 @@ long   task_time(long time);
 long   ft_gettime();
 int    full_init(t_data *data);
 void   free_all(t_data *data);
-void init_threads(t_data *data);
-void *semulation(void *co);
-void compile(t_coder *coder);
-void debug(t_coder *coder);
-void refactol(t_coder *coder);
-
-
-
+void    init_threads(t_data *data);
+void    *semulation(void *co);
+void    compile(t_coder *coder);
+void    debug(t_coder *coder);
+void    refactol(t_coder *coder);
+void    *monitor(void *d);
 
 
 
