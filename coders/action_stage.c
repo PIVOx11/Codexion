@@ -1,70 +1,75 @@
 #include "codexion.h"
 
-void compile(t_coder *coder)
+static void even_coders(t_coder *coder, int flag)
 {
-    long    t;
-    if (coder->id %2 != 0)
-    {    
-        pthread_mutex_lock(&coder->left_dongle->t);
-        t = task_time(coder->data->start_semulation);
-        if (coder->data->is_semulation_over)
-        return;
-        printf("%ld %d  has taken a dongle\n", t, coder->id);
-        pthread_mutex_lock(&coder->right_dongle->t);
-        t = task_time(coder->data->start_semulation);
-        printf("%ld %d  has taken a dongle\n", t, coder->id);
+    if (flag)
+    {
+        pthread_mutex_lock(&coder->left_dongle->dongle_mutex);
+        safe_print("take a dongle", coder);
+        pthread_mutex_lock(&coder->right_dongle->dongle_mutex);
+        safe_print("take a dongle", coder);
+    }
+    else
+    {       
+        pthread_mutex_unlock(&coder->left_dongle->dongle_mutex);
+        pthread_mutex_unlock(&coder->right_dongle->dongle_mutex);
+    }
+}
+static void odd_coders(t_coder *coder, int flag)
+{
+    if (flag)
+    {
+        pthread_mutex_lock(&coder->right_dongle->dongle_mutex);
+        safe_print("take a dongle", coder);
+        pthread_mutex_lock(&coder->left_dongle->dongle_mutex);
+        safe_print("take a dongle", coder);
     }
     else
     {
-        pthread_mutex_lock(&coder->right_dongle->t);
-        t = task_time(coder->data->start_semulation);
-        if (coder->data->is_semulation_over)
-        return;
-        printf("%ld %d  has taken a dongle\n", t, coder->id);
-        pthread_mutex_lock(&coder->left_dongle->t);
-        t = task_time(coder->data->start_semulation);
-        printf("%ld %d  has taken a dongle\n", t, coder->id);    
+        pthread_mutex_unlock(&coder->right_dongle->dongle_mutex);
+        pthread_mutex_unlock(&coder->left_dongle->dongle_mutex);
     }
-    
-    pthread_mutex_lock(&coder->t);
-    t = task_time(coder->data->start_semulation);
-    coder->last_compile_start = ft_gettime();
-    if (coder->data->is_semulation_over)
-        return;
-    printf("%ld %d is compiling\n", t, coder->id);
-    coder->compile_count++;
-    pthread_mutex_unlock(&coder->t);
-
-    usleep(coder->data->compile_time * 1000);
-
-    pthread_mutex_unlock(&coder->left_dongle->t);
-    pthread_mutex_unlock(&coder->right_dongle->t);
 }
 
+void compile(t_coder *coder)
+{
+    if (coder -> id % 2 == 0)
+        even_coders(coder, 1);
+    else
+        odd_coders(coder, 1);
+    if (get_bool(&coder->data->stop, &coder->data->is_semulation_over))
+    {
+        if (coder -> id % 2 == 0)
+            even_coders(coder, 0);
+        else
+            odd_coders(coder, 0);
+        return;
+    }
+    pthread_mutex_lock(&coder->coder_mutex);
+    coder->last_compile_start = ft_gettime();
+    safe_print("is compiling", coder);
+    coder->compile_count++;
+    pthread_mutex_unlock(&coder->coder_mutex);
+    safe_sleep(coder, coder->data->compile_time);
+    if (coder -> id % 2 == 0)
+        even_coders(coder, 0);
+    else
+        odd_coders(coder, 0);
+}
 
 void debug(t_coder *coder)
 {
-    if (coder->data->is_semulation_over)
+    if (get_bool(&coder->data->stop, &coder->data->is_semulation_over))
         return;
-    long t = task_time(coder->data->start_semulation);
-    pthread_mutex_lock(&coder->t);
-    if (coder->data->is_semulation_over)
-        return;
-    printf("%ld %d is debugging\n", t, coder->id);
-    pthread_mutex_unlock(&coder->t);
-    usleep(coder->data->debug_time * 1000);
+    safe_print("is debugging", coder);
+    safe_sleep(coder, coder->data->debug_time);
 }
 
 
 void refactol(t_coder *coder)
 {
-    if (coder->data->is_semulation_over)
+    if (get_bool(&coder->data->stop, &coder->data->is_semulation_over))
         return;
-    long t = task_time(coder->data->start_semulation);
-    pthread_mutex_lock(&coder->t);
-    if (coder->data->is_semulation_over)
-        return;
-    printf("%ld %d is refactoring\n", t, coder->id);
-    pthread_mutex_unlock(&coder->t);
-    usleep(coder->data->refactor_time * 1000);
+    safe_print("is refactoring", coder);
+    safe_sleep(coder, coder->data->refactor_time);
 }

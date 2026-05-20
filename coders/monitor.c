@@ -1,31 +1,48 @@
 #include "codexion.h"
 
 
-void *monitor(void *d)
+static int is_burned_out(t_coder *coder)
+{
+    long    pass;
+
+    pthread_mutex_lock(&coder->coder_mutex);
+    pass = ft_gettime() - coder->last_compile_start;
+    pthread_mutex_unlock(&coder->coder_mutex);
+    return (pass > coder->data->bornout_time);
+}
+
+void    *monitor(void *d)
 {
     int     i;
+    
     t_data *data = (t_data *)d;
-    while(data->is_ready == FALSE)
-    ;
-    usleep(1 * 1000);
-    while (data->is_semulation_over == FALSE)
+    while (!get_bool(&data->stop, &data->is_semulation_over))
     {
-        i = 0;
-        while (i < data->coder_count)
+        i = -1;
+
+        while (++i < data->coder_count)
         {
-            pthread_mutex_lock(&data->coders[i].t);
-            if (task_time(data->coders[i].last_compile_start) > data->bornout_time)
-            {
-                data->is_semulation_over = TRUE;
-                data->coders[i].coder_die = TRUE;
-                printf("%ld %d is burned out\n",
-                    task_time(data->start_semulation), i+1);
-                    pthread_mutex_unlock(&data->coders[i].t);
-                    return NULL;
-            }
-            pthread_mutex_unlock(&data->coders[i].t);
-            i++;
+            if (get_time(&data->coders[i].coder_mutex, &data->coders[i].last_compile_start) == 1)
+                continue;
+            if (get_bool(&data->data_mutex, &data->compile_done))
+                return (set_bool(&data->stop, &data->is_semulation_over, 1), NULL);
+            if (is_burned_out(&data->coders[i]))
+                return (safe_print("is burned out", &data->coders[i]),
+                    set_bool(&data->stop, &data->is_semulation_over, 1), NULL);
         }
+        usleep(1000);
     }
     return NULL;
 }
+
+
+
+
+
+
+
+/* 
+monitor
+check burnout ta3 koul coder
+check num compile, all coders kamloo -> NULL
+*/

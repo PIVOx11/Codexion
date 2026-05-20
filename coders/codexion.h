@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 17:56:07 by blidriss          #+#    #+#             */
-/*   Updated: 2026/05/18 11:07:38 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/05/20 21:20:00 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ typedef struct s_data t_data;
 
 typedef struct s_dongle
 {
-    mutex   t;
+    mutex   dongle_mutex;
     long    last_relais;
     int     dongle_id;
 
@@ -44,7 +44,7 @@ typedef struct s_coder
     t_dongle    *left_dongle;
     t_dongle    *right_dongle;
     pthread_t   thread_id;
-    mutex       t;
+    mutex       coder_mutex;
     int         coder_die;
     t_data      *data;
 
@@ -59,32 +59,38 @@ struct s_data
     int         refactor_time;
     int         compile_req;
     int         cold_down_time;
-    int         is_semulation_over;
     char    *scheduler;
+    int         is_semulation_over;
     long    start_semulation;
-    int     is_ready;
-    int     compile_done;
+    int     coders_ready;
+    int     compiles;
+    int     compile_done; 
     pthread_t monitor;
-    mutex   use_data;
+    mutex stop;
+    mutex data_mutex;
+    mutex print;
     t_dongle *dongles;
     t_coder  *coders;
 };
 
 
-void   ft_error();
-void   parse_arg(t_data *data, char **arg);
-void   set_arg(char **arg, t_data *data);
-long   task_time(long time);
-long   ft_gettime();
-int    full_init(t_data *data);
-void   free_all(t_data *data);
-void    init_threads(t_data *data);
+int     parse_arg(t_data *data, char **arg);
+void    set_arg(char **arg, t_data *data);
+long    task_time(long time);
+long    ft_gettime();
+int     full_init(t_data *data);
+void    free_all(t_data *data);
+int     start_semulation(t_data *data);
 void    *semulation(void *co);
 void    compile(t_coder *coder);
 void    debug(t_coder *coder);
 void    refactol(t_coder *coder);
 void    *monitor(void *d);
-
-
+int     get_bool(mutex *mtx, int *bool);
+void    set_bool(mutex *mtx, int *dest, int bool);
+long    get_time(mutex *mtx, long *time);
+void    safe_print(char *str, t_coder *coder);
+void    safe_sleep(t_coder *coder, int time);
+void    wait_all(t_coder *coder);
 
 #endif

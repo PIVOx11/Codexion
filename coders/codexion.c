@@ -6,31 +6,48 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 17:55:58 by blidriss          #+#    #+#             */
-/*   Updated: 2026/05/16 09:00:06 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/05/19 15:46:13 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
 
-void    ft_error(char *err)
-{
-	fprintf(stderr, "ERROR: %s\n", err);
-	exit(2);
-}
-
 int     main(int ac, char **av)
 {
     t_data      data;
-
+    
     if (ac != 9)
-        ft_error("All argument are mandatory");
-    parse_arg(&data, av);
-    full_init(&data);
-    init_threads(&data);
-    free_all(&data); // if you want to free befor you leave :)
+        return 1;
+    if (!parse_arg(&data, av))
+        return 1;
+    if (!full_init(&data))
+        return(free_all(&data), 1);
+    start_semulation(&data);
+    free_all(&data);
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
