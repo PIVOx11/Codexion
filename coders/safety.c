@@ -7,7 +7,7 @@ void safe_print(char *str, t_coder *coder)
     long    time;
 
     pthread_mutex_lock(&coder->data->data_mutex);
-    if (coder->data->is_semulation_over)
+    if (get_bool(&coder->data->stop, &coder->data->is_semulation_over))
     {    
         pthread_mutex_unlock(&coder->data->data_mutex);    
         return;
