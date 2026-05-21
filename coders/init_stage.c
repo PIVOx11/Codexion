@@ -54,6 +54,7 @@ static int fill_dongles_init_mutex(t_data *data)
     {
         t = &data->dongles[i];
         t->dongle_id = i;
+        t->last_relais = 1;
         if ((pthread_mutex_init(&t->dongle_mutex, NULL)) != 0)
             break;
     }

@@ -27,9 +27,9 @@ long    get_time(mutex *mtx, long *time)
     return res; 
 }
 
-void    set_time(mutex *mtx, long *dest, long *value)
+void    set_time(mutex *mtx, long *dest, long value)
 {
     pthread_mutex_lock(mtx);
-    *dest = *value;
+    *dest = value;
     pthread_mutex_unlock(mtx);
 }

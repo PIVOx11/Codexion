@@ -1,5 +1,22 @@
 #include "codexion.h"
 
+
+void    handle_cold_down(t_dongle *dongle, t_coder *coder)
+{
+    if (dongle->last_relais == 1)
+        return;
+    while (1)
+    {
+        pthread_mutex_lock(&dongle->cold_down);    
+        if (ft_gettime() >= dongle->last_relais || get_bool(&coder->data->stop, &coder->data->is_semulation_over))
+            {
+                pthread_mutex_unlock(&dongle->cold_down);
+                return;
+            }
+        pthread_mutex_unlock(&dongle->cold_down);
+        usleep(200);
+    }
+}
 static void handle_dongles(t_coder *coder, int lock)
 {
     t_dongle *first;
@@ -18,14 +35,18 @@ static void handle_dongles(t_coder *coder, int lock)
     if (lock)
     {
         pthread_mutex_lock(&first->dongle_mutex);
+        handle_cold_down(first, coder);
         safe_print("take a dongle", coder);
         pthread_mutex_lock(&second->dongle_mutex);
+        handle_cold_down(second, coder);
         safe_print("take a dongle", coder);
     }
     else
     {
         pthread_mutex_unlock(&first->dongle_mutex);
+        set_time(&first->cold_down, &first->last_relais, ft_gettime() + coder->data->cold_down_time);
         pthread_mutex_unlock(&second->dongle_mutex);
+        set_time(&first->cold_down, &first->last_relais, ft_gettime() + coder->data->cold_down_time);
     }
 }
 

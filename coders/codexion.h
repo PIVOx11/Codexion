@@ -31,6 +31,7 @@ typedef struct s_data t_data;
 typedef struct s_dongle
 {
     mutex   dongle_mutex;
+    mutex   cold_down;
     long    last_relais;
     int     dongle_id;
 
@@ -92,5 +93,6 @@ long    get_time(mutex *mtx, long *time);
 void    safe_print(char *str, t_coder *coder);
 void    safe_sleep(t_coder *coder, int time);
 void    wait_all(t_coder *coder);
+void    set_time(mutex *mtx, long *dest, long value);
 
 #endif
