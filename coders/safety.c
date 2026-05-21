@@ -27,6 +27,6 @@ void safe_sleep(t_coder *coder, int time)
     {
         if (ft_gettime() - start >= time)
             break;
-        usleep(200);
+        usleep(500);
     }
 }

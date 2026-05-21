@@ -5,10 +5,8 @@ static int is_burned_out(t_coder *coder)
 {
     long    pass;
 
-    pthread_mutex_lock(&coder->coder_mutex);
-    pass = ft_gettime() - coder->last_compile_start;
-    pthread_mutex_unlock(&coder->coder_mutex);
-    return (pass > coder->data->bornout_time);
+    pass = get_time(&coder->coder_mutex, &coder->last_compile_start);
+    return (ft_gettime() - pass > coder->data->bornout_time);
 }
 
 void    *monitor(void *d)
@@ -35,14 +33,3 @@ void    *monitor(void *d)
     return NULL;
 }
 
-
-
-
-
-
-
-/* 
-monitor
-check burnout ta3 koul coder
-check num compile, all coders kamloo -> NULL
-*/

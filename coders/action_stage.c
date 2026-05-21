@@ -1,48 +1,40 @@
 #include "codexion.h"
 
-static void even_coders(t_coder *coder, int flag)
+static void handle_dongles(t_coder *coder, int lock)
 {
-    if (flag)
+    t_dongle *first;
+    t_dongle *second;
+
+    if (coder->id % 2 == 0)
     {
-        pthread_mutex_lock(&coder->left_dongle->dongle_mutex);
-        safe_print("take a dongle", coder);
-        pthread_mutex_lock(&coder->right_dongle->dongle_mutex);
-        safe_print("take a dongle", coder);
+        first = coder->left_dongle;
+        second = coder->right_dongle;
     }
     else
-    {       
-        pthread_mutex_unlock(&coder->left_dongle->dongle_mutex);
-        pthread_mutex_unlock(&coder->right_dongle->dongle_mutex);
-    }
-}
-static void odd_coders(t_coder *coder, int flag)
-{
-    if (flag)
     {
-        pthread_mutex_lock(&coder->right_dongle->dongle_mutex);
+        first = coder->right_dongle;
+        second = coder->left_dongle;
+    }
+    if (lock)
+    {
+        pthread_mutex_lock(&first->dongle_mutex);
         safe_print("take a dongle", coder);
-        pthread_mutex_lock(&coder->left_dongle->dongle_mutex);
+        pthread_mutex_lock(&second->dongle_mutex);
         safe_print("take a dongle", coder);
     }
     else
     {
-        pthread_mutex_unlock(&coder->right_dongle->dongle_mutex);
-        pthread_mutex_unlock(&coder->left_dongle->dongle_mutex);
+        pthread_mutex_unlock(&first->dongle_mutex);
+        pthread_mutex_unlock(&second->dongle_mutex);
     }
 }
 
 void compile(t_coder *coder)
 {
-    if (coder -> id % 2 == 0)
-        even_coders(coder, 1);
-    else
-        odd_coders(coder, 1);
+    handle_dongles(coder, 1);
     if (get_bool(&coder->data->stop, &coder->data->is_semulation_over))
     {
-        if (coder -> id % 2 == 0)
-            even_coders(coder, 0);
-        else
-            odd_coders(coder, 0);
+        handle_dongles(coder, 0);
         return;
     }
     pthread_mutex_lock(&coder->coder_mutex);
@@ -51,10 +43,7 @@ void compile(t_coder *coder)
     coder->compile_count++;
     pthread_mutex_unlock(&coder->coder_mutex);
     safe_sleep(coder, coder->data->compile_time);
-    if (coder -> id % 2 == 0)
-        even_coders(coder, 0);
-    else
-        odd_coders(coder, 0);
+    handle_dongles(coder, 0);
 }
 
 void debug(t_coder *coder)
