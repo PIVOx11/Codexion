@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 17:56:07 by blidriss          #+#    #+#             */
-/*   Updated: 2026/05/20 21:20:00 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/05/22 08:57:12 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct s_dongle
     mutex   dongle_mutex;
     mutex   cold_down;
     long    last_relais;
+    int     is_taken;
     int     dongle_id;
 
 }   t_dongle;

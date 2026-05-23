@@ -3,8 +3,12 @@
 
 void    handle_cold_down(t_dongle *dongle, t_coder *coder)
 {
+    pthread_mutex_lock(&dongle->cold_down);  
     if (dongle->last_relais == 1)
+    {   pthread_mutex_unlock(&dongle->cold_down); 
         return;
+    }
+    pthread_mutex_unlock(&dongle->cold_down);
     while (1)
     {
         pthread_mutex_lock(&dongle->cold_down);    
