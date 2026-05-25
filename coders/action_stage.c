@@ -3,9 +3,10 @@
 
 void    handle_cold_down(t_dongle *dongle, t_coder *coder)
 {
-    pthread_mutex_lock(&dongle->cold_down);  
+    pthread_mutex_lock(&dongle->cold_down);
     if (dongle->last_relais == 1)
-    {   pthread_mutex_unlock(&dongle->cold_down); 
+    {
+        pthread_mutex_unlock(&dongle->cold_down);
         return;
     }
     pthread_mutex_unlock(&dongle->cold_down);
@@ -24,7 +25,7 @@ void    handle_cold_down(t_dongle *dongle, t_coder *coder)
 static void handle_dongles(t_coder *coder, int lock)
 {
     t_dongle *first;
-    t_dongle *second;
+    t_dongle    *second;
 
     if (coder->id % 2 == 0)
     {
