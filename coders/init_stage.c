@@ -22,21 +22,15 @@ static int fill_coders(t_data *data)
     while(++i < data->coder_count)
     {
         coder = data->coders + i;
-        if (pthread_mutex_init(&coder->coder_mutex, NULL) != 0)
-            break;
+        if (pthread_mutex_init(&coder->coder_mutex, NULL) != 0 || 
+            pthread_cond_init(&coder->coder_cond, NULL) != 0)
+            return FALSE;
         coder->id = i + 1;
         coder->compile_count = 0;
         coder->right_dongle = &data->dongles[i];
         coder->left_dongle = &data->dongles[(i + 1) % data->coder_count];
         coder->data = data;
-        coder->coder_die = FALSE;
         coder->last_compile_start = 1;
-    }
-    if (i < data->coder_count)
-    {
-        while (--i >= 0)
-            pthread_mutex_destroy(&coder->coder_mutex);
-        return FALSE;
     }
     return TRUE;
 }
@@ -44,34 +38,28 @@ static int fill_coders(t_data *data)
 static int fill_dongles_init_mutex(t_data *data) 
 {
     int         i;
-    t_dongle    *t;
+    t_dongle    *dongle;
 
     i = -1;
-    pthread_mutex_init(&data->stop, NULL);
-    pthread_mutex_init(&data->data_mutex, NULL);
-    
     while (++i < data->coder_count)
     {
-        t = &data->dongles[i];
-        t->dongle_id = i;
-        t->last_relais = 1;
-        if ((pthread_mutex_init(&t->dongle_mutex, NULL)) != 0)
+        dongle = &data->dongles[i];
+        dongle->dongle_id = i;
+        dongle->last_relais = 1;
+        if ((pthread_mutex_init(&dongle->dongle_mutex, NULL)) != 0 ||
+            pthread_cond_init(&dongle->dongle_cond, NULL) != 0)
             break;
-    }
-    if (i < data->coder_count)
-    {
-        while (--i >= 0)
-            pthread_mutex_destroy(&data->dongles[i].dongle_mutex);
-        return FALSE;
     }
     return TRUE;
 }
-
 
 int    full_init(t_data *data) // full init, the begenning point of init
 {
     data->coders = malloc(sizeof(t_coder) * data->coder_count);
     data->dongles = malloc(sizeof(t_dongle) * data->coder_count);
+    pthread_mutex_init(&data->stop, NULL);
+    pthread_mutex_init(&data->data_mutex, NULL);
+    pthread_cond_init(&data->data_cond, NULL);
     if (!data->coders || !data->dongles)
         return FALSE;
     if (!fill_dongles_init_mutex(data))
@@ -80,3 +68,4 @@ int    full_init(t_data *data) // full init, the begenning point of init
         return FALSE;
     return TRUE;
 }
+

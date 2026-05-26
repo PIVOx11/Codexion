@@ -2,12 +2,10 @@
 
 void wait_all(t_coder *coder)
 {
-    while(1)
-    {
-        if (get_bool(&coder->data->data_mutex, &coder->data->coders_ready))
-            break;
-        usleep(100);
-    }
+    pthread_mutex_lock(&coder->data->data_mutex);
+    while(!coder->data->coders_ready)
+        pthread_cond_wait(&coder->data->data_cond, &coder->data->data_mutex);
+    pthread_mutex_unlock(&coder->data->data_mutex);
 }
 
 void *semulation(void *co)
@@ -16,9 +14,7 @@ void *semulation(void *co)
 
     coder = (t_coder *)co;
     wait_all(coder);
-    pthread_mutex_lock(&coder->coder_mutex);
-    coder->last_compile_start = coder->data->start_semulation;
-    pthread_mutex_unlock(&coder->coder_mutex);
+    set_time(&coder->coder_mutex, &coder->last_compile_start, coder->data->start_semulation);
     while (!get_bool(&coder->data->stop, &coder->data->is_semulation_over))
     {
         pthread_mutex_lock(&coder->data->data_mutex);
@@ -55,6 +51,7 @@ int start_semulation(t_data *data)
     pthread_create(&data->monitor, NULL, monitor, data);
     data->start_semulation = ft_gettime();
     set_bool(&data->data_mutex, &data->coders_ready, TRUE);
+    pthread_cond_broadcast(&data->data_cond);
     while (++i < data->coder_count)
     {
         if (pthread_join(data->coders[i].thread_id, NULL) != 0)
