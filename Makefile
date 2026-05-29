@@ -15,8 +15,8 @@ coders/simulation_stage.c \
 coders/action_stage.c \
 coders/monitor.c \
 coders/set_and_get.c \
-coders/safety.c
-		
+coders/safety.c \
+coders/scheduler.c
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)

@@ -30,6 +30,14 @@ typedef pthread_cond_t cond;
 typedef struct s_data t_data;
 typedef struct s_coder t_coder;
 
+typedef struct s_request
+{
+    t_coder *coder;
+    long    request_time;
+    long    dead_line;
+
+}   t_request;
+
 typedef struct s_dongle
 {
     mutex   dongle_mutex;
@@ -38,7 +46,9 @@ typedef struct s_dongle
     long    last_relais;
     int     is_taken;
     int     dongle_id;
-    t_coder requests[2]
+    t_data *data;
+    int     heap_size;
+    t_request heap[2];
 
 }   t_dongle;
 
@@ -109,5 +119,10 @@ void    set_time(mutex *mtx, long *dest, long value);
 void    safe_print(char *str, t_coder *coder);
 void    safe_sleep(t_coder *coder, int time);
 void    wait_all(t_coder *coder);
+
+void    try_to_take_dongles(t_coder *coder);
+t_coder     *get_winner(t_dongle *dongle);
+void    mutex_lock(t_coder *coder);
+void remove_request(t_coder *coder, t_dongle *dongle);
 
 #endif

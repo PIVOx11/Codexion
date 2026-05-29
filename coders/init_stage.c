@@ -44,8 +44,11 @@ static int fill_dongles_init_mutex(t_data *data)
     while (++i < data->coder_count)
     {
         dongle = &data->dongles[i];
-        dongle->dongle_id = i;
+        dongle->dongle_id = i + 1;
         dongle->last_relais = 1;
+        dongle->data = data;
+        dongle->heap_size = 0;
+        dongle->is_taken = FALSE;
         if ((pthread_mutex_init(&dongle->dongle_mutex, NULL)) != 0 ||
             pthread_cond_init(&dongle->dongle_cond, NULL) != 0)
             break;
