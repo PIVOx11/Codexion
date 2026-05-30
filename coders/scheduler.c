@@ -4,11 +4,16 @@
 static void    add_request(t_coder *coder, t_dongle *dongle)
 {
     pthread_mutex_lock(&dongle->dongle_mutex);
+    if (dongle->heap_size >= 2)
+    {
+        /* heap is fixed-size (2). Drop request to avoid overflow. */
+        pthread_mutex_unlock(&dongle->dongle_mutex);
+        return;
+    }
     dongle->heap[dongle->heap_size].coder = coder;
     dongle->heap[dongle->heap_size].request_time = ft_gettime();
     dongle->heap[dongle->heap_size].dead_line = 
-    coder->last_compile_start + coder->data->bornout_time;
-    // printf("Request for dongel: %d, from coder: %d\n", dongle->dongle_id, dongle->heap[dongle->heap_size].coder->id);
+        coder->last_compile_start + coder->data->bornout_time;
     dongle->heap_size++;
     pthread_mutex_unlock(&dongle->dongle_mutex);
     return;
@@ -27,6 +32,8 @@ static int     can_take_dongle(t_dongle *dongle, t_coder *coder)
 
 t_coder     *get_winner(t_dongle *dongle)
 {
+    if (dongle->heap_size == 0)
+        return NULL;
     if (dongle->heap_size == 1)
         return dongle->heap[0].coder;
     if (strcmp(dongle->data->scheduler, "fifo") == 0)

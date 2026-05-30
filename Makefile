@@ -4,7 +4,7 @@ CFLAGS = -Wall -Wextra -Werror -pthread
 
 NAME = codexion
 
-HEADERE = coders/codexion.h
+HEADER = coders/codexion.h
 
 SRC = coders/codexion.c \
 coders/parsing_stage.c \
