@@ -3,19 +3,20 @@
 
 void compile(t_coder *coder)
 {
-    try_to_take_dongles(coder);
-    safe_print("is compiling", coder);
-    safe_sleep(coder, coder->data->compile_time);
-    coder->left_dongle->is_taken = FALSE;
-    coder->right_dongle->is_taken = FALSE;
-    coder->left_dongle->last_relais = ft_gettime();
-    coder->right_dongle->last_relais=  ft_gettime();
-    pthread_mutex_unlock(&coder->left_dongle->dongle_mutex);
-    pthread_mutex_unlock(&coder->right_dongle->dongle_mutex);
-    set_time(&coder->coder_mutex, &coder->last_compile_start, ft_gettime());
-    pthread_mutex_lock(&coder->coder_mutex);
-    coder->compile_count++;
-    pthread_mutex_unlock(&coder->coder_mutex);
+    add_request(coder);
+    while (!(take_dongle(coder->left_dongle, coder) && take_dongle(coder->right_dongle, coder)))
+    {
+        if (get_bool(&coder->data->stop, &coder->data->is_semulation_over))
+            return;
+        usleep(100);
+    }
+    set_bool(&coder->left_dongle->d_data, &coder->left_dongle->is_taken, TRUE);
+    set_bool(&coder->right_dongle->d_data, &coder->right_dongle->is_taken, TRUE);
+    remove_request(coder, coder->left_dongle);
+    remove_request(coder, coder->right_dongle);
+    compile_state(coder, TRUE);
+    compile_state(coder, FALSE);
+
 }
 
 void debug(t_coder *coder)
@@ -34,7 +35,29 @@ void refactol(t_coder *coder)
     safe_sleep(coder, coder->data->refactor_time);
 }
 
-
+void compile_state(t_coder *coder, int start)
+{
+    if (start)
+    {
+        mutex_lock(coder);
+        safe_print("take a dongle", coder);
+        safe_print("take a dongle", coder);
+        safe_print("is compiling", coder);
+        pthread_mutex_lock(&coder->coder_mutex);
+        coder->last_compile_start = ft_gettime();
+        coder->compile_count++;
+        pthread_mutex_unlock(&coder->coder_mutex);
+        safe_sleep(coder, coder->data->compile_time);
+        return;
+    }
+    pthread_mutex_unlock(&coder->left_dongle->dongle_mutex);
+    pthread_mutex_unlock(&coder->right_dongle->dongle_mutex);
+    set_time(&coder->left_dongle->d_data, &coder->left_dongle->last_relais, ft_gettime());
+    set_time(&coder->right_dongle->d_data, &coder->right_dongle->last_relais, ft_gettime());
+    set_bool(&coder->left_dongle->d_data, &coder->left_dongle->is_taken, FALSE);
+    set_bool(&coder->right_dongle->d_data, &coder->right_dongle->is_taken, FALSE);
+    // safe_print("coder drop the dongle :)", coder);
+}
 
 
 

@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 17:56:07 by blidriss          #+#    #+#             */
-/*   Updated: 2026/05/22 08:57:12 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/01 14:58:27 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef struct s_request
 typedef struct s_dongle
 {
     mutex   dongle_mutex;
-    mutex   cold_down;
+    mutex   d_data;
     cond    dongle_cond;
     long    last_relais;
     int     is_taken;
@@ -120,9 +120,13 @@ void    safe_print(char *str, t_coder *coder);
 void    safe_sleep(t_coder *coder, int time);
 void    wait_all(t_coder *coder);
 
-void    try_to_take_dongles(t_coder *coder);
-t_coder     *get_winner(t_dongle *dongle);
+t_coder *get_winner(t_dongle *dongle);
 void    mutex_lock(t_coder *coder);
-void remove_request(t_coder *coder, t_dongle *dongle);
+void    remove_request(t_coder *coder, t_dongle *dongle);
+void    add_request(t_coder *coder);
+void    fill_request(t_coder *coder, t_dongle *first, t_dongle *second);
+int     take_dongle(t_dongle *dongle, t_coder *coder);
+void compile_state(t_coder *coder, int start);
+
 
 #endif
