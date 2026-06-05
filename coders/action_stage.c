@@ -3,7 +3,10 @@
 
 void compile(t_coder *coder)
 {
+    // if (coder->id %2 == 0) // test to handlde the even and odd edge case :)
+    //     usleep(350);
     add_request(coder);
+
     while (!(take_dongle(coder->left_dongle, coder) && take_dongle(coder->right_dongle, coder)))
     {
         if (get_bool(&coder->data->stop, &coder->data->is_semulation_over))
@@ -56,7 +59,6 @@ void compile_state(t_coder *coder, int start)
     set_time(&coder->right_dongle->d_data, &coder->right_dongle->last_relais, ft_gettime());
     set_bool(&coder->left_dongle->d_data, &coder->left_dongle->is_taken, FALSE);
     set_bool(&coder->right_dongle->d_data, &coder->right_dongle->is_taken, FALSE);
-    // safe_print("coder drop the dongle :)", coder);
 }
 
 

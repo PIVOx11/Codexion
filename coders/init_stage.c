@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 17:55:54 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/01 09:54:54 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/05 11:18:18 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,11 @@ int    full_init(t_data *data) // full init, the begenning point of init
 {
     data->coders = malloc(sizeof(t_coder) * data->coder_count);
     data->dongles = malloc(sizeof(t_dongle) * data->coder_count);
+    if (!data->coders || !data->dongles)
+        return (malloc_clean(data), FALSE);
     pthread_mutex_init(&data->stop, NULL);
     pthread_mutex_init(&data->data_mutex, NULL);
     pthread_cond_init(&data->data_cond, NULL);
-    if (!data->coders || !data->dongles)
-        return FALSE;
     if (!fill_dongles_init_mutex(data))
         return FALSE;
     if (!fill_coders(data))

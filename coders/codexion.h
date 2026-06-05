@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 17:56:07 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/01 14:58:27 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/05 10:48:08 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 #include <stdlib.h>
 #include <sys/time.h>
 #include <unistd.h>
+#include <limits.h>
+
 
 #define FALSE 0
 #define TRUE 1
@@ -100,7 +102,7 @@ long    ft_gettime();
 
 int     full_init(t_data *data);
 
-void    free_all(t_data *data);
+void    malloc_clean(t_data *data);
 
 int     start_semulation(t_data *data);
 void    *semulation(void *co);

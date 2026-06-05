@@ -50,8 +50,10 @@ int start_semulation(t_data *data)
     i = -1;
     pthread_create(&data->monitor, NULL, monitor, data);
     data->start_semulation = ft_gettime();
-    set_bool(&data->data_mutex, &data->coders_ready, TRUE);
+    pthread_mutex_lock(&data->data_mutex);
+    data->coders_ready = TRUE;
     pthread_cond_broadcast(&data->data_cond);
+    pthread_mutex_unlock(&data->data_mutex);
     while (++i < data->coder_count)
     {
         if (pthread_join(data->coders[i].thread_id, NULL) != 0)

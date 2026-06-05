@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 16:21:30 by blidriss          #+#    #+#             */
-/*   Updated: 2026/05/19 15:45:18 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/05 10:41:24 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,27 +24,40 @@ void set_arg(char **arg, t_data *data)
     data->cold_down_time = atoi(arg[7]);
 }
 
-int parse_arg(t_data *data, char **arg)
+static int      costum_atoi(char *s)
 {
     int     i;
-    int     j;
+    long    nb;
 
-    i = 1;
-    while(i < 8)
+    if (!s || !*s)
+        return 0;
+    nb = 0;
+    i = - 1;
+    while(s[++i])
     {
-        j = 0;
-        if (arg[i][j] == '\0')
-            return FALSE;
-        while(arg[i][j])
+        if (s[i] < '0' || s[i] > '9')
         {
-            if (arg[i][j] < '0' || arg[i][j] > '9')
-                if (arg[i][j] != '+')
-                    return FALSE;
-            j++;
+            if (i == 0 && s[i] == '+')
+                continue;
+            else
+                return 0;
         }
-        if (atoi(arg[i]) == 0)
+        nb = nb * 10 + s[i] - 48;
+        if (nb > INT_MAX)
+            return 0;
+    }
+    return nb;
+}
+
+int     parse_arg(t_data *data, char **arg)
+{
+    int     i;
+
+    i = 0;
+    while(++i < 8)
+    {
+        if (!costum_atoi(arg[i]))
             return FALSE;
-        i++;
     }
     if(strcmp(arg[i], "fifo") != 0 && strcmp(arg[i], "edf") != 0)
         return FALSE;
