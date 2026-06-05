@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 17:56:07 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/05 10:48:08 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/05 20:14:03 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ typedef struct s_coder
     pthread_t   thread_id;
     mutex       coder_mutex;
     cond        coder_cond;
-    int         coder_die;
+    int         finish;
     t_data      *data;
 
 }   t_coder;

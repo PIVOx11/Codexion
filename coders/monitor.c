@@ -24,6 +24,8 @@ void    *monitor(void *d)
                 continue;
             if (get_bool(&data->data_mutex, &data->compile_done))
                 return (set_bool(&data->stop, &data->is_semulation_over, 1), NULL);
+            if (get_bool(&data->coders[i].coder_mutex, &data->coders[i].finish))
+                continue;
             if (is_burned_out(&data->coders[i]))
                 return (safe_print("is burned out", &data->coders[i]),
                     set_bool(&data->stop, &data->is_semulation_over, 1), NULL);

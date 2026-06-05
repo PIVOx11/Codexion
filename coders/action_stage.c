@@ -3,8 +3,8 @@
 
 void compile(t_coder *coder)
 {
-    // if (coder->id %2 == 0) // test to handlde the even and odd edge case :)
-    //     usleep(350);
+    // if (coder->id %2 != 0) // test to handlde the even and odd edge case :)  
+    //     usleep(500);
     add_request(coder);
 
     while (!(take_dongle(coder->left_dongle, coder) && take_dongle(coder->right_dongle, coder)))
@@ -49,6 +49,8 @@ void compile_state(t_coder *coder, int start)
         pthread_mutex_lock(&coder->coder_mutex);
         coder->last_compile_start = ft_gettime();
         coder->compile_count++;
+        if (coder->compile_count == coder->data->compile_req)
+            coder->finish = TRUE;
         pthread_mutex_unlock(&coder->coder_mutex);
         safe_sleep(coder, coder->data->compile_time);
         return;

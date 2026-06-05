@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 17:55:54 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/05 11:18:18 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/05 20:20:30 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ static int fill_coders(t_data *data)
         coder->left_dongle = &data->dongles[(i + 1) % data->coder_count];
         coder->data = data;
         coder->last_compile_start = 1;
+        coder->finish = FALSE;
     }
     return TRUE;
 }
