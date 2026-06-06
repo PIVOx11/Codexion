@@ -1,5 +1,25 @@
 #include "codexion.h"
 
+static int    creat_join_coders(t_data *data, int  join)
+{
+    int     i;
+
+    i = -1;
+    if (!join)
+    {
+        while (++i < data->coder_count)
+        {
+            if (pthread_create(&data->coders[i].thread_id, NULL, semulation, &data->coders[i]))
+                return FALSE;
+        }
+    }
+    while (++i < data->coder_count)
+    {
+        if (pthread_join(data->coders[i].thread_id, NULL) != 0)
+            return FALSE;
+    }
+    return TRUE;
+}
 void wait_all(t_coder *coder)
 {
     pthread_mutex_lock(&coder->data->data_mutex);
@@ -36,28 +56,24 @@ void *semulation(void *co)
 
 int start_semulation(t_data *data)
 {
-    int     i;
-
-    i = -1;
     data->coders_ready = FALSE;
     data->is_semulation_over = FALSE;
     data->compile_done = FALSE;
-    while (++i < data->coder_count)
-    {
-        if (pthread_create(&data->coders[i].thread_id, NULL, semulation, &data->coders[i]) != 0)
-            return FALSE;
-    }
-    i = -1;
-    pthread_create(&data->monitor, NULL, monitor, data);
+    if (creat_join_coders(data, FALSE) ||
+        pthread_create(&data->monitor, NULL, monitor, data))
+        return FALSE;
     data->start_semulation = ft_gettime();
-    pthread_mutex_lock(&data->data_mutex);
+    if (!data->start_semulation)
+        return FALSE;
+    if (pthread_mutex_lock(&data->data_mutex))
+        return FALSE;
     data->coders_ready = TRUE;
-    pthread_cond_broadcast(&data->data_cond);
-    pthread_mutex_unlock(&data->data_mutex);
-    while (++i < data->coder_count)
-    {
-        if (pthread_join(data->coders[i].thread_id, NULL) != 0)
-            return FALSE;
-    }
+    if (pthread_cond_broadcast(&data->data_cond))
+        return FALSE;
+    if (pthread_mutex_unlock(&data->data_mutex))
+        return FALSE;
+    if (creat_join_coders(data, TRUE))
+        return FALSE;
     return TRUE;
 }
+

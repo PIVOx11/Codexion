@@ -3,8 +3,6 @@
 
 void compile(t_coder *coder)
 {
-    // if (coder->id %2 != 0) // test to handlde the even and odd edge case :)  
-    //     usleep(500);
     add_request(coder);
 
     while (!(take_dongle(coder->left_dongle, coder) && take_dongle(coder->right_dongle, coder)))
