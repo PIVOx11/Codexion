@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 17:56:07 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/06 17:49:01 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/06 19:01:09 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ void    refactol(t_coder *coder);
 
 void    *monitor(void *d);
 
+// seters and geters
 int     get_bool(mutex *mtx, int *value);
 void    set_bool(mutex *mtx, int *dest, int value);
 long    get_time(mutex *mtx, long *time);
@@ -125,6 +126,7 @@ void    safe_print(char *str, t_coder *coder);
 void    safe_sleep(t_coder *coder, int time);
 void    wait_all(t_coder *coder);
 
+// scheduler
 t_coder *get_winner(t_dongle *dongle);
 void    mutex_lock(t_coder *coder);
 void    remove_request(t_coder *coder, t_dongle *dongle);
