@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/01 09:36:55 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/05 10:48:16 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/06 11:38:54 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,5 @@ int	main(int ac, char **av)
 	if (!full_init(&data))
 		return 1;
 	start_semulation(&data);
-	malloc_clean(&data);
+	clean_resources(&data);
 }

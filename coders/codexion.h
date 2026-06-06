@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 17:56:07 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/05 20:14:03 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/06 11:28:47 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ typedef struct s_dongle
 {
     mutex   dongle_mutex;
     mutex   d_data;
-    cond    dongle_cond;
     long    last_relais;
     int     is_taken;
     int     dongle_id;
@@ -63,7 +62,6 @@ typedef struct s_coder
     t_dongle    *right_dongle;
     pthread_t   thread_id;
     mutex       coder_mutex;
-    cond        coder_cond;
     int         finish;
     t_data      *data;
 
@@ -102,7 +100,12 @@ long    ft_gettime();
 
 int     full_init(t_data *data);
 
+/*clean up functons*/
 void    malloc_clean(t_data *data);
+void    coder_mutex_destroy(t_coder *coder, int counter);
+void    dongle_mutex_destroy(t_dongle *dongles, int counter);
+void	clean_data(t_data *data, int counter);
+void	clean_resources(t_data *data);
 
 int     start_semulation(t_data *data);
 void    *semulation(void *co);
@@ -128,7 +131,6 @@ void    remove_request(t_coder *coder, t_dongle *dongle);
 void    add_request(t_coder *coder);
 void    fill_request(t_coder *coder, t_dongle *first, t_dongle *second);
 int     take_dongle(t_dongle *dongle, t_coder *coder);
-void compile_state(t_coder *coder, int start);
-
+void    compile_state(t_coder *coder, int start);
 
 #endif

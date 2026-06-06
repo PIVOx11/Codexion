@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/01 09:37:21 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/05 10:47:51 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/06 11:35:07 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,4 +19,44 @@ void	malloc_clean(t_data *data)
 		free(data->coders);
 	if (data->dongles)
 		free(data->dongles);
+}
+void dongle_mutex_destroy(t_dongle *dongles, int counter)
+{
+	int		i;
+
+	i = -1;
+	while (++i < counter)
+	{
+		pthread_mutex_destroy(&dongles[i].dongle_mutex);
+		pthread_mutex_destroy(&dongles[i].d_data);
+	}
+}
+void coder_mutex_destroy(t_coder *coder, int counter)
+{
+	int		i;
+
+	i = -1;
+	while (++i < counter)
+		pthread_mutex_destroy(&coder[i].coder_mutex);
+}
+void	clean_data(t_data *data, int counter)
+{
+	malloc_clean(data);
+	if (counter > 0)
+		pthread_mutex_destroy(&data->stop);
+	if (counter > 1)
+		pthread_mutex_destroy(&data->data_mutex);
+	if (counter > 2)
+		pthread_cond_destroy(&data->data_cond);
+		
+}
+
+void	clean_resources(t_data *data)
+{
+	return (
+		clean_data(data, 3),
+		dongle_mutex_destroy(data->dongles, data->coder_count),
+		coder_mutex_destroy(data->coders, data->coder_count),
+		malloc_clean(data)
+	);
 }
