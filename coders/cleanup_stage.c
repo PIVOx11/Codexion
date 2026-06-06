@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/01 09:37:21 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/06 11:35:07 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/06 18:42:28 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ void coder_mutex_destroy(t_coder *coder, int counter)
 }
 void	clean_data(t_data *data, int counter)
 {
-	malloc_clean(data);
 	if (counter > 0)
 		pthread_mutex_destroy(&data->stop);
 	if (counter > 1)
@@ -53,10 +52,8 @@ void	clean_data(t_data *data, int counter)
 
 void	clean_resources(t_data *data)
 {
-	return (
-		clean_data(data, 3),
-		dongle_mutex_destroy(data->dongles, data->coder_count),
-		coder_mutex_destroy(data->coders, data->coder_count),
-		malloc_clean(data)
-	);
+	clean_data(data, 3);
+	dongle_mutex_destroy(data->dongles, data->coder_count);
+	coder_mutex_destroy(data->coders, data->coder_count);
+	malloc_clean(data);
 }

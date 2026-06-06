@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 16:21:30 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/05 10:41:24 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/06 17:45:47 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static int      costum_atoi(char *s)
         if (nb > INT_MAX)
             return 0;
     }
-    return nb;
+    return (int )nb;
 }
 
 int     parse_arg(t_data *data, char **arg)

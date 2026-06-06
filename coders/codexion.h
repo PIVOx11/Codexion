@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 17:56:07 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/06 11:28:47 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/06 17:49:01 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ struct s_data
     long        start_semulation;
     int         coders_ready;
     int         compiles;
-    int         compile_done; 
+    int         compile_done;
     pthread_t   monitor;
     mutex       stop;
     mutex       data_mutex;

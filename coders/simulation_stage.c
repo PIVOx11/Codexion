@@ -56,24 +56,22 @@ void *semulation(void *co)
 
 int start_semulation(t_data *data)
 {
-    data->coders_ready = FALSE;
-    data->is_semulation_over = FALSE;
-    data->compile_done = FALSE;
-    if (creat_join_coders(data, FALSE) ||
+    if (!creat_join_coders(data, FALSE) ||
         pthread_create(&data->monitor, NULL, monitor, data))
+        return FALSE;
+    if (pthread_mutex_lock(&data->data_mutex))
         return FALSE;
     data->start_semulation = ft_gettime();
     if (!data->start_semulation)
-        return FALSE;
-    if (pthread_mutex_lock(&data->data_mutex))
         return FALSE;
     data->coders_ready = TRUE;
     if (pthread_cond_broadcast(&data->data_cond))
         return FALSE;
     if (pthread_mutex_unlock(&data->data_mutex))
         return FALSE;
-    if (creat_join_coders(data, TRUE))
+    if (pthread_join(data->monitor, NULL))
+        return FALSE;
+    if (!creat_join_coders(data, TRUE))
         return FALSE;
     return TRUE;
 }
-
