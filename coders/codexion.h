@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 17:56:07 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/07 10:41:47 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/07 11:03:12 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,5 +140,6 @@ void    remove_request(t_coder *coder, t_dongle *dongle);
 void    add_request(t_coder *coder);
 void    fill_request(t_coder *coder, t_dongle *first, t_dongle *second);
 int     take_dongle(t_dongle *dongle, t_coder *coder);
+
 
 #endif
