@@ -11,7 +11,6 @@ static int is_burned_out(t_coder *coder)
 
 static int coder_status(t_coder *coder)
 {
-    // check if a coder finish it requred compile count :)
     if (pthread_mutex_lock(&coder->coder_mutex))
         return FALSE;
     if (coder->compile_count == coder->data->compile_req)
