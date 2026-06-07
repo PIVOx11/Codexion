@@ -1,6 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   safety.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/06/07 10:39:20 by blidriss          #+#    #+#             */
+/*   Updated: 2026/06/07 10:54:11 by blidriss         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "codexion.h"
 
+void print_burnout(t_coder *coder)
+{
+    long    time;
 
+    pthread_mutex_lock(&coder->data->data_mutex);
+    time = task_time(coder->data->start_semulation);
+    printf("%ld %d burned out\n",
+    time, coder->id);
+    pthread_mutex_unlock(&coder->data->data_mutex);
+}
 
 void safe_print(char *str, t_coder *coder)
 {

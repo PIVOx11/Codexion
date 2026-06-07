@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 17:56:07 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/06 19:01:09 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/07 10:41:47 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,13 +91,15 @@ struct s_data
     t_coder     *coders;
 };
 
-
+// parsing stage
 int     parse_arg(t_data *data, char **arg);
 void    set_arg(char **arg, t_data *data);
 
+// time functions
 long    task_time(long time);
 long    ft_gettime();
 
+// init stage
 int     full_init(t_data *data);
 
 /*clean up functons*/
@@ -107,24 +109,29 @@ void    dongle_mutex_destroy(t_dongle *dongles, int counter);
 void	clean_data(t_data *data, int counter);
 void	clean_resources(t_data *data);
 
+// simulation functions
 int     start_semulation(t_data *data);
 void    *semulation(void *co);
 
+// Thread Actions
 void    compile(t_coder *coder);
 void    debug(t_coder *coder);
 void    refactol(t_coder *coder);
 
+// monitor
 void    *monitor(void *d);
 
 // seters and geters
 int     get_bool(mutex *mtx, int *value);
-void    set_bool(mutex *mtx, int *dest, int value);
+int    set_bool(mutex *mtx, int *dest, int value);
 long    get_time(mutex *mtx, long *time);
-void    set_time(mutex *mtx, long *dest, long value);
+int    set_time(mutex *mtx, long *dest, long value);
 
+// safety functions
 void    safe_print(char *str, t_coder *coder);
 void    safe_sleep(t_coder *coder, int time);
 void    wait_all(t_coder *coder);
+void print_burnout(t_coder *coder);
 
 // scheduler
 t_coder *get_winner(t_dongle *dongle);
@@ -133,6 +140,5 @@ void    remove_request(t_coder *coder, t_dongle *dongle);
 void    add_request(t_coder *coder);
 void    fill_request(t_coder *coder, t_dongle *first, t_dongle *second);
 int     take_dongle(t_dongle *dongle, t_coder *coder);
-void    compile_state(t_coder *coder, int start);
 
 #endif

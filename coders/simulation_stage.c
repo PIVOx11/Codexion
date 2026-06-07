@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   simulation_stage.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/06/07 09:15:28 by blidriss          #+#    #+#             */
+/*   Updated: 2026/06/07 10:19:43 by blidriss         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "codexion.h"
 
 static int    creat_join_coders(t_data *data, int  join)
@@ -35,18 +47,9 @@ void *semulation(void *co)
     coder = (t_coder *)co;
     wait_all(coder);
     set_time(&coder->coder_mutex, &coder->last_compile_start, coder->data->start_semulation);
-    while (!get_bool(&coder->data->stop, &coder->data->is_semulation_over))
+    while (!get_bool(&coder->data->stop, &coder->data->is_semulation_over) &&
+            !get_bool(&coder->coder_mutex, &coder->finish))
     {
-        pthread_mutex_lock(&coder->data->data_mutex);
-        if (coder->compile_count == coder->data->compile_req)
-        {
-            coder->data->compiles++;
-            if (coder->data->compiles == coder->data->coder_count)
-                coder->data->compile_done = TRUE;
-            pthread_mutex_unlock(&coder->data->data_mutex);
-            return NULL;
-        }
-        pthread_mutex_unlock(&coder->data->data_mutex);
         compile(coder);
         debug(coder);
         refactol(coder);
