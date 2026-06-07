@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/01 10:24:29 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/06 09:42:06 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/07 11:23:47 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ void remove_request(t_coder *coder, t_dongle *dongle)
     pthread_mutex_lock(&dongle->d_data);
     while (++i < dongle->heap_size)
     {
-        if    (dongle->heap[i].coder == coder)
+        if (dongle->heap[i].coder == coder)
         {
-             dongle->heap[i] =  dongle->heap[1];
+            dongle->heap[i] =  dongle->heap[1];
             break;
         }
     }
