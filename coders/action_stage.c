@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 09:15:24 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/07 10:38:45 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/07 11:01:45 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ void debug(t_coder *coder)
     safe_print("is debugging", coder);
     safe_sleep(coder, coder->data->debug_time);
 }
-
 void refactol(t_coder *coder)
 {
     safe_print("is refactoring", coder);
