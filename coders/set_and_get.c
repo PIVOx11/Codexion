@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 09:15:10 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/07 09:15:18 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/07 11:47:27 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,19 @@ int    get_bool(mutex *mtx, int *value)
 {
     int     res;
 
-    if (pthread_mutex_lock(mtx))
-        return -1;
+    pthread_mutex_lock(mtx);
     res =  *value;
-    if (pthread_mutex_unlock(mtx))
-        return -1;
+    pthread_mutex_unlock(mtx);
     return res;
 }
 
 int set_bool(mutex *mtx, int *dest, int value)
 {
-    if (pthread_mutex_lock(mtx))
-        return FALSE;
+    pthread_mutex_lock(mtx);
+        
     *dest = value;
-    if (pthread_mutex_unlock(mtx))
-        return FALSE;
+    pthread_mutex_unlock(mtx);
+        
     return TRUE;
 }
 
@@ -38,20 +36,16 @@ long    get_time(mutex *mtx, long *time)
 {
     long     res;
 
-    if (pthread_mutex_lock(mtx))
-        return -1;
+    pthread_mutex_lock(mtx);
     res =  *time;
-    if (pthread_mutex_unlock(mtx))
-        return -1;
+    pthread_mutex_unlock(mtx);
     return res; 
 }
 
 int    set_time(mutex *mtx, long *dest, long value)
 {
-    if (pthread_mutex_lock(mtx))
-        return FALSE;
+    pthread_mutex_lock(mtx);
     *dest = value;
-    if (pthread_mutex_unlock(mtx))
-        return FALSE;
+    pthread_mutex_unlock(mtx);
     return TRUE;
 }
