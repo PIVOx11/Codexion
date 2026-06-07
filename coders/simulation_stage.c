@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 09:15:28 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/07 10:19:43 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/07 11:55:09 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,16 +62,14 @@ int start_semulation(t_data *data)
     if (!creat_join_coders(data, FALSE) ||
         pthread_create(&data->monitor, NULL, monitor, data))
         return FALSE;
-    if (pthread_mutex_lock(&data->data_mutex))
-        return FALSE;
+    pthread_mutex_lock(&data->data_mutex);
     data->start_semulation = ft_gettime();
     if (!data->start_semulation)
-        return FALSE;
+        return (pthread_mutex_unlock(&data->data_mutex), FALSE);
     data->coders_ready = TRUE;
     if (pthread_cond_broadcast(&data->data_cond))
-        return FALSE;
-    if (pthread_mutex_unlock(&data->data_mutex))
-        return FALSE;
+        return (pthread_mutex_unlock(&data->data_mutex), FALSE);
+    pthread_mutex_unlock(&data->data_mutex);
     if (pthread_join(data->monitor, NULL))
         return FALSE;
     if (!creat_join_coders(data, TRUE))
