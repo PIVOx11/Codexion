@@ -28,16 +28,16 @@ static int coder_status(t_coder *coder)
 }
 static int is_simulation_over(t_data *data)
 {
-    int     bool;
+    int     b;
 
-    bool = FALSE;
+    b = FALSE;
     if (pthread_mutex_lock(&data->data_mutex))
         return -1;
     if (data->compiles == data->coder_count)
-        bool = TRUE;
+        b = TRUE;
     if (pthread_mutex_unlock(&data->data_mutex))
         return -1;
-    return bool;
+    return b;
 }
 void    *monitor(void *d)
 {

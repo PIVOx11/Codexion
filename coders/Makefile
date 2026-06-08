@@ -6,18 +6,18 @@ NAME = codexion
 
 HEADER = coders/codexion.h
 
-SRC = coders/codexion.c \
-coders/parsing_stage.c \
-coders/time.c \
-coders/init_stage.c \
-coders/cleanup_stage.c \
-coders/simulation_stage.c \
-coders/action_stage.c \
-coders/monitor.c \
-coders/set_and_get.c \
-coders/safety.c \
-coders/scheduler.c \
-coders/scheduler_utils.c
+SRC = codexion.c \
+parsing_stage.c \
+time.c \
+init_stage.c \
+cleanup_stage.c \
+simulation_stage.c \
+action_stage.c \
+monitor.c \
+set_and_get.c \
+safety.c \
+scheduler.c \
+scheduler_utils.c
 
 OBJ = $(SRC:.c=.o)
 
