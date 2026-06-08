@@ -1,2 +1,3 @@
-still need to add the case of one coder
-review the case of take dongle by dongle not two at the same time (optionnel :))
+- still need to add the case of one coder ✅ 
+- review the case of take dongle by dongle not two at the same time (optionnel :))
+- allow zero in colddown data ;)
