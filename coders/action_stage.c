@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 09:15:24 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/07 11:01:45 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/04/15 19:35:43 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ void compile(t_coder *coder)
     remove_request(coder, coder->right_dongle);
     compile_state(coder, TRUE);
     compile_state(coder, FALSE);
-
 }
 
 void debug(t_coder *coder)

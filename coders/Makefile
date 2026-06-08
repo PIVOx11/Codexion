@@ -8,7 +8,6 @@ HEADER = coders/codexion.h
 
 SRC = codexion.c \
 parsing_stage.c \
-time.c \
 init_stage.c \
 cleanup_stage.c \
 simulation_stage.c \
