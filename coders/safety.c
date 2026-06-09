@@ -42,13 +42,24 @@ void safe_print(char *str, t_coder *coder)
 void safe_sleep(t_coder *coder, int time)
 {
     long    start;
+    long    elapsed;
+    long    remaining;
+    long    slice;
 
     start = ft_gettime();
     while(!get_bool(&coder->data->stop, &coder->data->is_semulation_over))
     {
-        if (ft_gettime() - start >= time)
+        elapsed = ft_gettime() - start;
+        if (elapsed >= time)
             break;
-        usleep(500);
+        remaining = time - elapsed;
+        if (remaining > 10)
+            slice = 1000;
+        else
+            slice = remaining * 1000;
+        if (slice < 100)
+            slice = 100;
+        usleep(slice);
     }
 }
 long    ft_gettime()

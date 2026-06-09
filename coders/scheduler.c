@@ -14,12 +14,32 @@
 
 void    wait_dongle(t_coder *coder, t_dongle *dongle)
 {
+    long    elapsed;
+    long    remaining;
+    long    slice;
+
     pthread_mutex_lock(&dongle->d_data);
     while (!try_take_dongle(dongle, coder))
         pthread_cond_wait(&dongle->dongle_cond, &dongle->d_data);
-    while (ft_gettime() - dongle->last_relais <
-            coder->data->cold_down_time)
-            usleep(500);
+    while (!get_bool(&coder->data->stop, &coder->data->is_semulation_over))
+    {
+        elapsed = ft_gettime() - dongle->last_relais;
+        if (elapsed >= coder->data->cold_down_time)
+            break;
+        remaining = coder->data->cold_down_time - elapsed;
+        if (remaining > 10)
+            slice = 1000;
+        else
+            slice = remaining * 1000;
+        if (slice < 100)
+            slice = 100;
+        usleep(slice);
+    }
+    if (get_bool(&coder->data->stop, &coder->data->is_semulation_over))
+    {
+        pthread_mutex_unlock(&dongle->d_data);
+        return;
+    }
     dongle->is_taken = TRUE;
     pthread_mutex_unlock(&dongle->d_data);
     safe_print("has take a dongle", coder);
