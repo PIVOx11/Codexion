@@ -32,7 +32,7 @@ void    wait_dongle(t_coder *coder, t_dongle *dongle)
             break;
         remaining = coder->data->cold_down_time - elapsed;
         if (remaining > MAX_SLEEP_CHUNK_MS)
-            slice = US_PER_MS;
+            slice = MAX_SLEEP_CHUNK_MS * US_PER_MS;
         else
             slice = remaining * US_PER_MS;
         if (slice < MIN_SLEEP_US)

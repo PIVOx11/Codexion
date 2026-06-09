@@ -58,7 +58,7 @@ void safe_sleep(t_coder *coder, int time)
             break;
         remaining = time - elapsed;
         if (remaining > MAX_SLEEP_CHUNK_MS)
-            slice = US_PER_MS;
+            slice = MAX_SLEEP_CHUNK_MS * US_PER_MS;
         else
             slice = remaining * US_PER_MS;
         if (slice < MIN_SLEEP_US)
