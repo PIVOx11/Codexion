@@ -6,52 +6,52 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 09:15:24 by blidriss          #+#    #+#             */
-/*   Updated: 2026/04/15 19:35:43 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/09 12:35:48 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-static void compile_state(t_coder *coder, int start)
+
+static void update_compile_state(t_coder *coder)
 {
-    if (start)
-    {
-        mutex_lock(coder);
-        safe_print("has taken a dongle", coder);
-        safe_print("has taken a dongle", coder);
-        safe_print("is compiling", coder);
-        pthread_mutex_lock(&coder->coder_mutex);
-        coder->last_compile_start = ft_gettime();
-        coder->compile_count++;
-        pthread_mutex_unlock(&coder->coder_mutex);
-        safe_sleep(coder, coder->data->compile_time);
-        return;
+    safe_print("is compiling", coder);
+    pthread_mutex_lock(&coder->coder_mutex);
+    coder->compile_count++;
+    coder->last_compile_start = ft_gettime();
+    if (coder->compile_count == coder->data->compile_req)
+    {     
+        coder->finish = TRUE;
+        pthread_mutex_lock(&coder->data->data_mutex);
+        coder->data->compiles++;
+        pthread_mutex_unlock(&coder->data->data_mutex);
     }
-    pthread_mutex_unlock(&coder->left_dongle->dongle_mutex);
-    pthread_mutex_unlock(&coder->right_dongle->dongle_mutex);
-    set_time(&coder->left_dongle->d_data, &coder->left_dongle->last_relais, ft_gettime());
-    set_time(&coder->right_dongle->d_data, &coder->right_dongle->last_relais, ft_gettime());
-    set_bool(&coder->left_dongle->d_data, &coder->left_dongle->is_taken, FALSE);
-    set_bool(&coder->right_dongle->d_data, &coder->right_dongle->is_taken, FALSE);
+    pthread_mutex_unlock(&coder->coder_mutex);
 }
 
+static void relaise_dongle(t_coder *coder, t_dongle *dongle)
+{
+    pthread_mutex_lock(&dongle->d_data);
+    remove_request(coder, dongle);
+    dongle->is_taken = FALSE;
+    dongle->last_relais = ft_gettime();
+    pthread_cond_broadcast(&dongle->dongle_cond);
+    pthread_mutex_unlock(&dongle->d_data);
+}
 
 void compile(t_coder *coder)
 {
+    t_dongle *first;
+    t_dongle *second;
+    
     add_request(coder);
-
-    while (!(take_dongle(coder->left_dongle, coder) && take_dongle(coder->right_dongle, coder)))
-    {
-        if (get_bool(&coder->data->stop, &coder->data->is_semulation_over))
-            return;
-        usleep(100);
-    }
-    set_bool(&coder->left_dongle->d_data, &coder->left_dongle->is_taken, TRUE);
-    set_bool(&coder->right_dongle->d_data, &coder->right_dongle->is_taken, TRUE);
-    remove_request(coder, coder->left_dongle);
-    remove_request(coder, coder->right_dongle);
-    compile_state(coder, TRUE);
-    compile_state(coder, FALSE);
+    dongle_order(coder, &first, &second);
+    wait_dongle(coder, first);
+    wait_dongle(coder, second);
+    update_compile_state(coder);
+    safe_sleep(coder, coder->data->compile_time);
+    relaise_dongle(coder, first);
+    relaise_dongle(coder, second);
 }
 
 void debug(t_coder *coder)
@@ -64,7 +64,6 @@ void refactol(t_coder *coder)
     safe_print("is refactoring", coder);
     safe_sleep(coder, coder->data->refactor_time);
 }
-
 
 
 

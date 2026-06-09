@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 17:56:07 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/07 11:03:12 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/09 11:41:15 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct s_dongle
 {
     mutex   dongle_mutex;
     mutex   d_data;
+    cond    dongle_cond;
     long    last_relais;
     int     is_taken;
     int     dongle_id;
@@ -105,7 +106,7 @@ int     full_init(t_data *data);
 /*clean up functons*/
 void    malloc_clean(t_data *data);
 void    coder_mutex_destroy(t_coder *coder, int counter);
-void    dongle_mutex_destroy(t_dongle *dongles, int counter);
+void    dongle_destroy(t_dongle *dongles, int counter);
 void	clean_data(t_data *data, int counter);
 void	clean_resources(t_data *data);
 
@@ -139,7 +140,8 @@ void    mutex_lock(t_coder *coder);
 void    remove_request(t_coder *coder, t_dongle *dongle);
 void    add_request(t_coder *coder);
 void    fill_request(t_coder *coder, t_dongle *first, t_dongle *second);
-int     take_dongle(t_dongle *dongle, t_coder *coder);
-
+int     try_take_dongle(t_dongle *dongle, t_coder *coder);
+void    wait_dongle(t_coder *coder, t_dongle *dongle);
+void    dongle_order(t_coder *coder, t_dongle **f, t_dongle **s);
 
 #endif

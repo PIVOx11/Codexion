@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 10:39:20 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/08 21:09:39 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/09 09:21:15 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,18 +54,13 @@ void safe_sleep(t_coder *coder, int time)
 long    ft_gettime()
 {
     struct timeval t;
-    if (gettimeofday(&t, NULL) == -1)
-        return 0;
+    
+    gettimeofday(&t, NULL);
     return ((t.tv_sec * 1000) + (t.tv_usec / 1000));
 }
 
 
 long task_time(long time)
 {
-    long    current_time;
-
-    current_time = ft_gettime();
-    if (!current_time)
-        return 0;
-    return (current_time - time);
+    return (ft_gettime() - time);
 }

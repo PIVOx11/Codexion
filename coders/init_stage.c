@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 17:55:54 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/06 18:44:57 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/09 11:06:40 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,9 @@ static int dongles_init(t_data *data)
         dongle->heap_size = 0;
         dongle->is_taken = FALSE;
         if (pthread_mutex_init(&dongle->dongle_mutex, NULL) ||
-            pthread_mutex_init(&dongle->d_data, NULL))
-            return (dongle_mutex_destroy(data->dongles, i), FALSE);
+            pthread_mutex_init(&dongle->d_data, NULL) ||
+            pthread_cond_init(&dongle->dongle_cond, NULL))
+            return (dongle_destroy(data->dongles, i), FALSE);
     }
     return TRUE;
 }
@@ -85,7 +86,7 @@ int    full_init(t_data *data)
     if (!coders_init(data))
         return (malloc_clean(data),
                 clean_data(data, 3),
-                dongle_mutex_destroy(data->dongles, data->coder_count),
+                dongle_destroy(data->dongles, data->coder_count),
                 FALSE);
     return TRUE;
 }

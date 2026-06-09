@@ -1,5 +1,29 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   scheduler.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/06/09 10:36:29 by blidriss          #+#    #+#             */
+/*   Updated: 2026/06/09 12:19:28 by blidriss         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "codexion.h"
 
+void    wait_dongle(t_coder *coder, t_dongle *dongle)
+{
+    pthread_mutex_lock(&dongle->d_data);
+    while (!try_take_dongle(dongle, coder))
+        pthread_cond_wait(&dongle->dongle_cond, &dongle->d_data);
+    while (ft_gettime() - dongle->last_relais <
+            coder->data->cold_down_time)
+            usleep(500);
+    dongle->is_taken = TRUE;
+    pthread_mutex_unlock(&dongle->d_data);
+    safe_print("has take a dongle", coder);
+}
 
 void    add_request(t_coder *coder)
 {
@@ -11,17 +35,10 @@ void    add_request(t_coder *coder)
     fill_request(coder, coder->right_dongle ,coder->left_dongle);
 }
 
-int     take_dongle(t_dongle *dongle, t_coder *coder)
+int     try_take_dongle(t_dongle *dongle, t_coder *coder)
 {
-    pthread_mutex_lock(&dongle->d_data);
-    if (dongle->is_taken || get_winner(dongle) != coder ||
-        (dongle->last_relais != 1 && ft_gettime() - dongle->last_relais < coder->data->cold_down_time)
-    )
-    {
-        pthread_mutex_unlock(&dongle->d_data);
+    if (dongle->is_taken || get_winner(dongle) != coder)
         return FALSE;
-    }
-    pthread_mutex_unlock(&dongle->d_data);
     return TRUE;
 }
 
@@ -39,6 +56,3 @@ t_coder     *get_winner(t_dongle *dongle)
         return dongle->heap[1].coder;
     return NULL;
 }
-
-
-

@@ -6,18 +6,28 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/01 10:24:29 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/07 11:23:47 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/09 11:50:42 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
+void dongle_order(t_coder *coder, t_dongle **f, t_dongle **s)
+{
+    if (coder->left_dongle->dongle_id < coder->right_dongle->dongle_id)
+    {
+        *f = coder->left_dongle;
+        *s = coder->right_dongle;
+        return;
+    }
+    *f = coder->right_dongle;
+    *s = coder->left_dongle;
+}
 void remove_request(t_coder *coder, t_dongle *dongle)
 {
     int     i;
 
     i = -1;
-    pthread_mutex_lock(&dongle->d_data);
     while (++i < dongle->heap_size)
     {
         if (dongle->heap[i].coder == coder)
@@ -27,19 +37,6 @@ void remove_request(t_coder *coder, t_dongle *dongle)
         }
     }
     dongle->heap_size--;
-    pthread_mutex_unlock(&dongle->d_data);
-}
-
-void    mutex_lock(t_coder *coder)
-{
-    if (coder->left_dongle->dongle_id < coder->right_dongle->dongle_id)
-    {
-        pthread_mutex_lock(&coder->left_dongle->dongle_mutex);
-        pthread_mutex_lock(&coder->right_dongle->dongle_mutex);
-        return;
-    }
-    pthread_mutex_lock(&coder->right_dongle->dongle_mutex);
-    pthread_mutex_lock(&coder->left_dongle->dongle_mutex);
 }
 
 void    fill_request(t_coder *coder, t_dongle *first, t_dongle *second)
