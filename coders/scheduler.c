@@ -12,6 +12,10 @@
 
 #include "codexion.h"
 
+#define US_PER_MS 1000
+#define MIN_SLEEP_US 100
+#define MAX_SLEEP_CHUNK_MS 10
+
 void    wait_dongle(t_coder *coder, t_dongle *dongle)
 {
     long    elapsed;
@@ -27,12 +31,12 @@ void    wait_dongle(t_coder *coder, t_dongle *dongle)
         if (elapsed >= coder->data->cold_down_time)
             break;
         remaining = coder->data->cold_down_time - elapsed;
-        if (remaining > 10)
-            slice = 1000;
+        if (remaining > MAX_SLEEP_CHUNK_MS)
+            slice = US_PER_MS;
         else
-            slice = remaining * 1000;
-        if (slice < 100)
-            slice = 100;
+            slice = remaining * US_PER_MS;
+        if (slice < MIN_SLEEP_US)
+            slice = MIN_SLEEP_US;
         usleep(slice);
     }
     if (get_bool(&coder->data->stop, &coder->data->is_semulation_over))

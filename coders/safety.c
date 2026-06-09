@@ -12,6 +12,10 @@
 
 #include "codexion.h"
 
+#define US_PER_MS 1000
+#define MIN_SLEEP_US 100
+#define MAX_SLEEP_CHUNK_MS 10
+
 void print_burnout(t_coder *coder)
 {
     long    time;
@@ -53,12 +57,12 @@ void safe_sleep(t_coder *coder, int time)
         if (elapsed >= time)
             break;
         remaining = time - elapsed;
-        if (remaining > 10)
-            slice = 1000;
+        if (remaining > MAX_SLEEP_CHUNK_MS)
+            slice = US_PER_MS;
         else
-            slice = remaining * 1000;
-        if (slice < 100)
-            slice = 100;
+            slice = remaining * US_PER_MS;
+        if (slice < MIN_SLEEP_US)
+            slice = MIN_SLEEP_US;
         usleep(slice);
     }
 }
