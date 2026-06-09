@@ -6,10 +6,9 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/01 09:37:21 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/09 11:05:42 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/09 20:24:42 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "codexion.h"
 
@@ -20,9 +19,10 @@ void	malloc_clean(t_data *data)
 	if (data->dongles)
 		free(data->dongles);
 }
-void dongle_destroy(t_dongle *dongles, int counter)
+
+void	dongle_destroy(t_dongle *dongles, int counter)
 {
-	int		i;
+	int	i;
 
 	i = -1;
 	while (++i < counter)
@@ -32,7 +32,8 @@ void dongle_destroy(t_dongle *dongles, int counter)
 		pthread_cond_destroy(&dongles[i].dongle_cond);
 	}
 }
-void coder_mutex_destroy(t_coder *coder, int counter)
+
+void	coder_mutex_destroy(t_coder *coder, int counter)
 {
 	int		i;
 
@@ -40,6 +41,7 @@ void coder_mutex_destroy(t_coder *coder, int counter)
 	while (++i < counter)
 		pthread_mutex_destroy(&coder[i].coder_mutex);
 }
+
 void	clean_data(t_data *data, int counter)
 {
 	if (counter > 0)
@@ -48,7 +50,6 @@ void	clean_data(t_data *data, int counter)
 		pthread_mutex_destroy(&data->data_mutex);
 	if (counter > 2)
 		pthread_cond_destroy(&data->data_cond);
-		
 }
 
 void	clean_resources(t_data *data)

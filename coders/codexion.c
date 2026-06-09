@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/01 09:36:55 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/07 14:43:09 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/09 20:25:27 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	main(int ac, char **av)
 	if (!parse_arg(&data, av))
 		return (1);
 	if (!full_init(&data))
-		return 1;
+		return (1);
 	start_semulation(&data);
 	clean_resources(&data);
 }
