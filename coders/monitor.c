@@ -49,11 +49,8 @@ void    *monitor(void *d)
             if (ignore(&data->coders[i]))
                 continue;
             if (is_burned_out(&data->coders[i]))
-            {
-                safe_print("is burned out", &data->coders[i]);
-                set_bool(&data->stop, &data->is_semulation_over, TRUE);
-                return (NULL);
-            }
+                return (set_bool(&data->stop, &data->is_semulation_over, TRUE),
+                        print_burnout(&data->coders[i]), NULL);
         }
         if (is_simulation_over(data))
                 return (set_bool(&data->stop, &data->is_semulation_over, TRUE), NULL);

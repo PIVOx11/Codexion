@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 10:36:29 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/09 12:19:28 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/09 14:48:53 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,14 @@ int     try_take_dongle(t_dongle *dongle, t_coder *coder)
 
 t_coder     *get_winner(t_dongle *dongle)
 {
-    if (dongle->heap_size == 0)
-        return NULL;
     if (dongle->heap_size == 1)
         return dongle->heap[0].coder;
-    if (strcmp(dongle->data->scheduler, "fifo") == 0)
+    if (dongle->data->scheduler == EDF)
+    {
+        if (dongle->heap[0].dead_line < dongle->heap[1].dead_line)
+            return dongle->heap[0].coder;
+        else
+            return dongle->heap[1].coder;
+    }
         return dongle->heap[0].coder;
-    if (dongle->heap[0].dead_line < dongle->heap[1].dead_line)
-        return dongle->heap[0].coder;
-    else
-        return dongle->heap[1].coder;
-    return NULL;
 }

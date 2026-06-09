@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 09:15:28 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/09 12:48:08 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/09 14:37:48 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void *semulation(void *co)
     coder = (t_coder *)co;
     set_time(&coder->coder_mutex, &coder->last_compile_start, coder->data->start_semulation);
     if (coder->id %2 == 0)
-        usleep(1000);
+        usleep(100);
     while (!get_bool(&coder->data->stop, &coder->data->is_semulation_over))
     {
         if (get_bool(&coder->coder_mutex, &coder->finish))

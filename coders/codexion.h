@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 17:56:07 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/09 11:41:15 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/09 14:54:14 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@
 
 #define FALSE 0
 #define TRUE 1
+#define EDF 2
+#define FIFO 3
 
 typedef pthread_mutex_t mutex;
 typedef pthread_cond_t cond;
@@ -77,7 +79,7 @@ struct s_data
     int         refactor_time;
     int         compile_req;
     int         cold_down_time;
-    char        *scheduler;
+    int         scheduler;
     int         is_semulation_over;
     long        start_semulation;
     int         coders_ready;
