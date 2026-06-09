@@ -12,6 +12,10 @@
 
 #include "codexion.h"
 
+#define US_PER_MS 1000
+#define MIN_SLEEP_US 100
+#define MAX_SLEEP_CHUNK_MS 10
+
 void print_burnout(t_coder *coder)
 {
     long    time;
@@ -42,13 +46,24 @@ void safe_print(char *str, t_coder *coder)
 void safe_sleep(t_coder *coder, int time)
 {
     long    start;
+    long    elapsed;
+    long    remaining;
+    long    slice;
 
     start = ft_gettime();
     while(!get_bool(&coder->data->stop, &coder->data->is_semulation_over))
     {
-        if (ft_gettime() - start >= time)
+        elapsed = ft_gettime() - start;
+        if (elapsed >= time)
             break;
-        usleep(500);
+        remaining = time - elapsed;
+        if (remaining > MAX_SLEEP_CHUNK_MS)
+            slice = MAX_SLEEP_CHUNK_MS * US_PER_MS;
+        else
+            slice = remaining * US_PER_MS;
+        if (slice < MIN_SLEEP_US)
+            slice = MIN_SLEEP_US;
+        usleep(slice);
     }
 }
 long    ft_gettime()
