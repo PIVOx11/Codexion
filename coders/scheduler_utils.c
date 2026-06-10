@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/01 10:24:29 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/09 21:40:43 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/10 21:48:41 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	dongle_order(t_coder *coder, t_dongle **f, t_dongle **s)
 void	remove_request(t_coder *coder, t_dongle *dongle)
 {
 	int		i;
-
+	pthread_mutex_lock(&dongle->d_data);
 	i = -1;
 	while (++i < dongle->heap_size)
 	{
@@ -38,6 +38,7 @@ void	remove_request(t_coder *coder, t_dongle *dongle)
 		}
 	}
 	dongle->heap_size--;
+	pthread_mutex_unlock(&dongle->d_data);
 }
 
 void	fill_request(t_coder *coder, t_dongle *f, t_dongle *s)

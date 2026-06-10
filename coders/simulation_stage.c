@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 09:15:28 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/09 22:06:21 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/10 22:22:12 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static void	*semulate_one(void *c)
 	t_coder	*coder;
 
 	coder = (t_coder *)c;
-	wait_all(coder);
 	set_time(&coder->coder_mutex, &coder->last_compile_start,
 		coder->data->start_semulation);
 	pthread_mutex_lock(&coder->left_dongle->dongle_mutex);
@@ -57,14 +56,6 @@ static int	creat_join_coders(t_data *data, int join)
 	return (TRUE);
 }
 
-void	wait_all(t_coder *coder)
-{
-	pthread_mutex_lock(&coder->data->data_mutex);
-	while (!coder->data->coders_ready)
-		pthread_cond_wait(&coder->data->data_cond, &coder->data->data_mutex);
-	pthread_mutex_unlock(&coder->data->data_mutex);
-}
-
 void	*semulation(void *co)
 {
 	t_coder	*coder;
@@ -93,11 +84,6 @@ int	start_semulation(t_data *data)
 	if (!creat_join_coders(data, FALSE)
 		|| pthread_create(&data->monitor, NULL, monitor, data))
 		return (FALSE);
-	pthread_mutex_lock(&data->data_mutex);
-	data->coders_ready = TRUE;
-	if (pthread_cond_broadcast(&data->data_cond))
-		return (pthread_mutex_unlock(&data->data_mutex), FALSE);
-	pthread_mutex_unlock(&data->data_mutex);
 	if (pthread_join(data->monitor, NULL))
 		return (FALSE);
 	if (!creat_join_coders(data, TRUE))

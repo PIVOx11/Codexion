@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 09:15:24 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/09 20:23:22 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/10 22:24:38 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,29 +28,29 @@ static void	update_compile_state(t_coder *coder)
 	pthread_mutex_unlock(&coder->coder_mutex);
 }
 
-static void	relaise_dongle(t_coder *coder, t_dongle *dongle)
+static void	relaise_dongle(t_dongle *dongle)
 {
 	pthread_mutex_lock(&dongle->d_data);
-	remove_request(coder, dongle);
 	dongle->is_taken = FALSE;
 	dongle->last_relais = ft_gettime();
 	pthread_cond_broadcast(&dongle->dongle_cond);
 	pthread_mutex_unlock(&dongle->d_data);
 }
-
 void	compile(t_coder *coder)
 {
 	t_dongle	*first;
 	t_dongle	*second;
 
-	add_request(coder);
 	dongle_order(coder, &first, &second);
+	add_request(coder, first, second);
 	wait_dongle(coder, first);
 	wait_dongle(coder, second);
+	remove_request(coder, first);
+	remove_request(coder, second);
 	update_compile_state(coder);
 	safe_sleep(coder, coder->data->compile_time);
-	relaise_dongle(coder, first);
-	relaise_dongle(coder, second);
+	relaise_dongle(first);
+	relaise_dongle(second);
 }
 
 void	debug(t_coder *coder)

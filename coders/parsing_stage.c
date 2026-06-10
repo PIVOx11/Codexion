@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 16:21:30 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/09 21:21:58 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/10 22:58:36 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ int	parse_arg(t_data *data, char **arg)
 		if (!costum_atoi(arg[i]))
 			return (FALSE);
 	}
-	if (strcmp(arg[i], "fifo") != 0)
+	if (strcmp(arg[i], "fifo") == 0)
 		data->scheduler = FIFO;
-	else if (strcmp(arg[i], "edf") != 0)
+	else if (strcmp(arg[i], "edf") == 0)
 		data->scheduler = EDF;
 	else
 		return (FALSE);

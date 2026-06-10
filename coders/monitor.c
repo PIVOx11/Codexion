@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 21:12:48 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/09 21:12:49 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/10 21:51:45 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,7 @@ void	*monitor(void *d)
 					print_burnout(&data->coders[i]), NULL);
 		}
 		if (is_simulation_over(data))
-			return (set_bool(&data->stop,
-					&data->is_semulation_over,
-					TRUE), NULL);
+			return (NULL);
 		usleep(200);
 	}
 	return (NULL);

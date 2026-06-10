@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 17:56:07 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/09 20:43:43 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/10 22:22:00 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,14 +132,13 @@ int		set_time(t_mutex *mtx, long *dest, long value);
 // safety functions
 void	safe_print(char *str, t_coder *coder);
 void	safe_sleep(t_coder *coder, int time);
-void	wait_all(t_coder *coder);
 void	print_burnout(t_coder *coder);
 
 // scheduler
 t_coder	*get_winner(t_dongle *dongle);
 void	mutex_lock(t_coder *coder);
 void	remove_request(t_coder *coder, t_dongle *dongle);
-void	add_request(t_coder *coder);
+void	add_request(t_coder *coder, t_dongle *f, t_dongle *s);
 void	fill_request(t_coder *coder, t_dongle *first, t_dongle *second);
 int		try_take_dongle(t_dongle *dongle, t_coder *coder);
 void	wait_dongle(t_coder *coder, t_dongle *dongle);
