@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 10:36:29 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/10 22:55:09 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/10 23:01:59 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	wait_dongle(t_coder *coder, t_dongle *dongle)
 		pthread_cond_wait(
 			&dongle->dongle_cond,
 			&dongle->d_data);
-
 	last_relais = dongle->last_relais;
 	pthread_mutex_unlock(&dongle->d_data);
 	while (ft_gettime() - last_relais < coder->data->cold_down_time)
@@ -51,7 +50,6 @@ void	add_request(t_coder *coder, t_dongle *f, t_dongle *s)
 		time = coder->last_compile_start;
 		s->heap[s->heap_size].coder = coder;
 		s->heap[s->heap_size].dead_line = time + coder->data->bornout_time;
-
 		s->heap_size++;
 	}
 	pthread_mutex_unlock(&s->d_data);

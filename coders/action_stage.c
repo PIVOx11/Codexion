@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 09:15:24 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/10 22:24:38 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/10 23:01:37 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ static void	relaise_dongle(t_dongle *dongle)
 	pthread_cond_broadcast(&dongle->dongle_cond);
 	pthread_mutex_unlock(&dongle->d_data);
 }
+
 void	compile(t_coder *coder)
 {
 	t_dongle	*first;
