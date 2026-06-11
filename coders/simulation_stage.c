@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 09:15:28 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/10 22:22:12 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/11 17:46:33 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ static int	creat_join_coders(t_data *data, int join)
 
 void	*semulation(void *co)
 {
+	t_dongle	*f;
+	t_dongle	*s;
 	t_coder	*coder;
 
 	coder = (t_coder *)co;
@@ -65,11 +67,12 @@ void	*semulation(void *co)
 		&coder->last_compile_start, coder->data->start_semulation);
 	if (coder->id % 2 == 0)
 		usleep(100);
+	dongle_order(coder, &f, &s);
 	while (!get_bool(&coder->data->stop, &coder->data->is_semulation_over))
 	{
 		if (get_bool(&coder->coder_mutex, &coder->finish))
 			return (NULL);
-		compile(coder);
+		compile(coder, f, s);
 		debug(coder);
 		refactol(coder);
 	}

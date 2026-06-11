@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/01 10:24:29 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/10 23:02:14 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/11 16:49:27 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	dongle_order(t_coder *coder, t_dongle **f, t_dongle **s)
 {
-	if (coder->left_dongle->dongle_id < coder->right_dongle->dongle_id)
+	if (coder->id % 2 == 0)
 	{
 		*f = coder->left_dongle;
 		*s = coder->right_dongle;

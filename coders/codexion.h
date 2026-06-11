@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 17:56:07 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/10 22:22:00 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/11 16:59:53 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ int		start_semulation(t_data *data);
 void	*semulation(void *co);
 
 // Thread Actions
-void	compile(t_coder *coder);
+void	compile(t_coder *coder, t_dongle *first,t_dongle *second);
 void	debug(t_coder *coder);
 void	refactol(t_coder *coder);
 

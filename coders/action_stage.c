@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 09:15:24 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/10 23:01:37 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/11 16:59:34 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,8 @@ static void	relaise_dongle(t_dongle *dongle)
 	pthread_mutex_unlock(&dongle->d_data);
 }
 
-void	compile(t_coder *coder)
+void	compile(t_coder *coder, t_dongle *first, t_dongle *second)
 {
-	t_dongle	*first;
-	t_dongle	*second;
-
-	dongle_order(coder, &first, &second);
 	add_request(coder, first, second);
 	wait_dongle(coder, first);
 	wait_dongle(coder, second);
