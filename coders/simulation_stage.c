@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 09:15:28 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/11 17:46:33 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/12 21:29:40 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	*semulation(void *co)
 {
 	t_dongle	*f;
 	t_dongle	*s;
-	t_coder	*coder;
+	t_coder		*coder;
 
 	coder = (t_coder *)co;
 	set_time(&coder->coder_mutex,

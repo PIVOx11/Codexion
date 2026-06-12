@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/01 10:24:29 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/11 16:49:27 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/12 21:53:46 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ void	fill_request(t_coder *coder, t_dongle *f, t_dongle *s)
 		f->heap[f->heap_size].coder = coder;
 		f->heap[f->heap_size].dead_line = time + coder->data->bornout_time;
 		f->heap_size++;
+		if (f->heap_size == 2)
+			preorety(f);
 	}
 	pthread_mutex_unlock(&f->d_data);
 	pthread_mutex_lock(&s->d_data);
@@ -62,6 +64,27 @@ void	fill_request(t_coder *coder, t_dongle *f, t_dongle *s)
 		s->heap[s->heap_size].coder = coder;
 		s->heap[s->heap_size].dead_line = time + coder->data->bornout_time;
 		s->heap_size++;
+		if (s->heap_size == 2)
+			preorety(s);
 	}
 	pthread_mutex_unlock(&s->d_data);
+}
+
+void	preorety(t_dongle *dongle)
+{
+	t_request	*heap;
+	t_request	*f;
+	t_request	*s;
+
+	heap = dongle->heap;
+	f = &heap[0];
+	s = &heap[1];
+	if (dongle->data->scheduler == EDF)
+	{
+		if (heap[0].dead_line > heap[1].dead_line)
+		{
+			heap[0] = *s;
+			heap[1] = *f;
+		}
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 10:36:29 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/11 17:43:07 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/12 22:07:49 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ void	add_request(t_coder *coder, t_dongle *f, t_dongle *s)
 	long	time;
 
 	pthread_mutex_lock(&f->d_data);
+	// printf("=====C%d request D%d===== in slot %d\n", coder->id, f->dongle_id, 
+	// 		f->heap_size + 1); // debug check :)
 	if (f->heap_size < 2)
 	{
 		time = coder->last_compile_start;
@@ -45,6 +47,8 @@ void	add_request(t_coder *coder, t_dongle *f, t_dongle *s)
 	}
 	pthread_mutex_unlock(&f->d_data);
 	pthread_mutex_lock(&s->d_data);
+	// printf("=====C%d request D%d===== in slot %d\n", coder->id, s->dongle_id, 
+	// 		s->heap_size + 1); // debug check :)
 	if (s->heap_size < 2)
 	{
 		time = coder->last_compile_start;
@@ -57,21 +61,8 @@ void	add_request(t_coder *coder, t_dongle *f, t_dongle *s)
 
 int	try_take_dongle(t_dongle *dongle, t_coder *coder)
 {
-	if (dongle->is_taken || get_winner(dongle) != coder)
+	if (dongle->is_taken || dongle->heap[0].coder != coder)
 		return (FALSE);
 	return (TRUE);
 }
 
-t_coder	*get_winner(t_dongle *dongle)
-{
-	if (dongle->heap_size == 1)
-		return (dongle->heap[0].coder);
-	if (dongle->data->scheduler == EDF)
-	{
-		if (dongle->heap[0].dead_line < dongle->heap[1].dead_line)
-			return (dongle->heap[0].coder);
-		else
-			return (dongle->heap[1].coder);
-	}
-	return (dongle->heap[0].coder);
-}
