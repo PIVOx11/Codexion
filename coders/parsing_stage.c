@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 16:21:30 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/10 22:58:36 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/13 09:12:10 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 void	set_arg(char **arg, t_data *data)
 {
-	data->coder_count = atoi(arg[1]);
-	data->bornout_time = atoi(arg[2]);
-	data->compile_time = atoi(arg[3]);
-	data->debug_time = atoi(arg[4]);
-	data->refactor_time = atoi(arg[5]);
-	data->compile_req = atoi(arg[6]);
-	data->cold_down_time = atoi(arg[7]);
+	data->coder_c = atoi(arg[1]);
+	data->bornout_t = atoi(arg[2]);
+	data->compile_t = atoi(arg[3]);
+	data->debug_t = atoi(arg[4]);
+	data->refactor_t = atoi(arg[5]);
+	data->compile_r = atoi(arg[6]);
+	data->cold_down_t = atoi(arg[7]);
 }
 
 static int	costum_atoi(char *s)

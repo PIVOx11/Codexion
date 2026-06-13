@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/01 10:24:29 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/12 21:53:46 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/13 14:32:08 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	remove_request(t_coder *coder, t_dongle *dongle)
 
 	pthread_mutex_lock(&dongle->d_data);
 	i = -1;
-	while (++i < dongle->heap_size)
+	while (++i < dongle->heap_s)
 	{
 		if (dongle->heap[i].coder == coder)
 		{
@@ -38,7 +38,7 @@ void	remove_request(t_coder *coder, t_dongle *dongle)
 			break ;
 		}
 	}
-	dongle->heap_size--;
+	dongle->heap_s--;
 	pthread_mutex_unlock(&dongle->d_data);
 }
 
@@ -47,24 +47,24 @@ void	fill_request(t_coder *coder, t_dongle *f, t_dongle *s)
 	long	time;
 
 	pthread_mutex_lock(&f->d_data);
-	if (f->heap_size < 2)
+	if (f->heap_s < 2)
 	{
-		time = coder->last_compile_start;
-		f->heap[f->heap_size].coder = coder;
-		f->heap[f->heap_size].dead_line = time + coder->data->bornout_time;
-		f->heap_size++;
-		if (f->heap_size == 2)
+		time = coder->compile_start_t;
+		f->heap[f->heap_s].coder = coder;
+		f->heap[f->heap_s].dead_line = time + coder->data->bornout_t;
+		f->heap_s++;
+		if (f->heap_s == 2)
 			preorety(f);
 	}
 	pthread_mutex_unlock(&f->d_data);
 	pthread_mutex_lock(&s->d_data);
-	if (s->heap_size < 2)
+	if (s->heap_s < 2)
 	{
-		time = coder->last_compile_start;
-		s->heap[s->heap_size].coder = coder;
-		s->heap[s->heap_size].dead_line = time + coder->data->bornout_time;
-		s->heap_size++;
-		if (s->heap_size == 2)
+		time = coder->compile_start_t;
+		s->heap[s->heap_s].coder = coder;
+		s->heap[s->heap_s].dead_line = time + coder->data->bornout_t;
+		s->heap_s++;
+		if (s->heap_s == 2)
 			preorety(s);
 	}
 	pthread_mutex_unlock(&s->d_data);

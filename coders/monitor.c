@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 21:12:48 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/10 21:51:45 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/13 14:27:39 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@ static int	is_burned_out(t_coder *coder)
 {
 	return (
 		ft_gettime() - get_time(&coder->coder_mutex,
-			&coder->last_compile_start) > coder->data->bornout_time
+			&coder->compile_start_t) > coder->data->bornout_t
 	);
 }
 
 static int	ignore(t_coder *coder)
 {
 	pthread_mutex_lock(&coder->coder_mutex);
-	if (coder->last_compile_start == 1 || coder->finish == TRUE)
+	if (coder->compile_start_t == 1 || coder->finish == TRUE)
 	{
 		pthread_mutex_unlock(&coder->coder_mutex);
 		return (TRUE);
@@ -35,7 +35,7 @@ static int	ignore(t_coder *coder)
 static int	is_simulation_over(t_data *data)
 {
 	pthread_mutex_lock(&data->data_mutex);
-	if (data->compiles == data->coder_count)
+	if (data->compiles == data->coder_c)
 	{
 		pthread_mutex_unlock(&data->data_mutex);
 		return (TRUE);
@@ -50,15 +50,15 @@ void	*monitor(void *d)
 	int		i;
 
 	data = (t_data *)d;
-	while (!get_bool(&data->stop, &data->is_semulation_over))
+	while (!get_bool(&data->stop, &data->semulation_over))
 	{
 		i = -1;
-		while (++i < data->coder_count)
+		while (++i < data->coder_c)
 		{
 			if (ignore(&data->coders[i]))
 				continue ;
 			if (is_burned_out(&data->coders[i]))
-				return (set_bool(&data->stop, &data->is_semulation_over, TRUE),
+				return (set_bool(&data->stop, &data->semulation_over, TRUE),
 					print_burnout(&data->coders[i]), NULL);
 		}
 		if (is_simulation_over(data))

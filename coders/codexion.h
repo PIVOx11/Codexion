@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 17:56:07 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/12 22:08:22 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/13 14:46:26 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,16 @@ typedef pthread_cond_t	t_cond;
 typedef struct s_data	t_data;
 typedef struct s_coder	t_coder;
 
+/*
+_t = time
+_c = count
+_s = size
+_r = required
+*/
 typedef struct s_request
 {
 	t_coder	*coder;
-	long	request_time;
+	long	request_t;
 	long	dead_line;
 
 }	t_request;
@@ -44,22 +50,21 @@ typedef struct s_request
 typedef struct s_dongle
 {
 	t_request	heap[2];
-	t_mutex		dongle_mutex;
 	t_mutex		d_data;
 	t_cond		dongle_cond;
-	long		last_relais;
+	long		relais_t;
 	int			is_taken;
-	int			dongle_id;
+	int			id;
 	t_data		*data;
-	int			heap_size;
+	int			heap_s;
 
 }	t_dongle;
 
 typedef struct s_coder
 {
 	int			id;
-	int			compile_count;
-	long		last_compile_start;
+	int			compile_c;
+	long		compile_start_t;
 	t_dongle	*left_dongle;
 	t_dongle	*right_dongle;
 	pthread_t	thread_id;
@@ -71,24 +76,21 @@ typedef struct s_coder
 
 struct s_data
 {
-	int			coder_count;
-	int			bornout_time;
-	int			compile_time;
-	int			debug_time;
-	int			refactor_time;
-	int			compile_req;
-	int			cold_down_time;
+	int			coder_c;
+	int			bornout_t;
+	int			compile_t;
+	int			debug_t;
+	int			refactor_t;
+	int			compile_r;
+	int			cold_down_t;
 	int			scheduler;
-	int			is_semulation_over;
-	long		start_semulation;
-	int			coders_ready;
+	int			semulation_over;
+	long		semulation_start;
 	int			compiles;
-	int			compile_done;
 	pthread_t	monitor;
 	t_mutex		stop;
 	t_mutex		data_mutex;
-	t_mutex		print;
-	t_cond		data_cond;
+	t_mutex		print_mutex;
 	t_dongle	*dongles;
 	t_coder		*coders;
 };
