@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 16:21:30 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/13 09:12:10 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/13 15:45:17 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	costum_atoi(char *s)
 	return ((int )nb);
 }
 
-int	parse_arg(t_data *data, char **arg)
+int	parse_arg(t_data *data, char **arg) // handle the case of 0 at cold down be 0 :)
 {
 	int		i;
 
