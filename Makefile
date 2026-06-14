@@ -4,19 +4,19 @@ CFLAGS = -Wall -Wextra -Werror -pthread -g
 
 NAME = codexion
 
-HEADER = coders/codexion.h
+HEADER = src/codexion.h
 
-SRC = coders/codexion.c \
-coders/parsing_stage.c \
-coders/init_stage.c \
-coders/cleanup_stage.c \
-coders/simulation_stage.c \
-coders/action_stage.c \
-coders/monitor.c \
-coders/set_and_get.c \
-coders/safety.c \
-coders/scheduler.c \
-coders/scheduler_utils.c
+SRC = src/codexion.c \
+src/parsing_stage.c \
+src/init_stage.c \
+src/cleanup_stage.c \
+src/simulation_stage.c \
+src/action_stage.c \
+src/monitor.c \
+src/set_and_get.c \
+src/safety.c \
+src/scheduler.c \
+src/scheduler_utils.c
 
 OBJ = $(SRC:.c=.o)
 
