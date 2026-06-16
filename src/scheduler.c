@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 10:36:29 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/13 14:49:46 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/16 11:02:50 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	wait_dongle(t_coder *coder, t_dongle *dongle)
 	pthread_mutex_lock(&dongle->d_data);
 	dongle->is_taken = TRUE;
 	pthread_mutex_unlock(&dongle->d_data);
-	safe_print("has take a dongle", coder);
+	safe_print("has taken a dongle", coder);
 }
 
 void	add_request(t_coder *coder, t_dongle *f, t_dongle *s)

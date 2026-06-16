@@ -6,21 +6,26 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 16:21:30 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/13 15:45:17 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/16 10:55:49 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-void	set_arg(char **arg, t_data *data)
+static int	set_arg(char **arg, t_data *data)
 {
 	data->coder_c = atoi(arg[1]);
+	if (data->coder_c == 0)
+		return FALSE;
 	data->bornout_t = atoi(arg[2]);
 	data->compile_t = atoi(arg[3]);
 	data->debug_t = atoi(arg[4]);
 	data->refactor_t = atoi(arg[5]);
 	data->compile_r = atoi(arg[6]);
+	if (data->compile_r == 0)
+		return FALSE;
 	data->cold_down_t = atoi(arg[7]);
+	return TRUE;
 }
 
 static int	costum_atoi(char *s)
@@ -29,7 +34,7 @@ static int	costum_atoi(char *s)
 	long	nb;
 
 	if (!s || !*s)
-		return (0);
+		return (-1);
 	nb = 0;
 	i = -1;
 	while (s[++i])
@@ -39,23 +44,24 @@ static int	costum_atoi(char *s)
 			if (i == 0 && s[i] == '+')
 				continue ;
 			else
-				return (0);
+				return (-1);
 		}
 		nb = nb * 10 + s[i] - 48;
 		if (nb > INT_MAX)
-			return (0);
+			return (-1);
 	}
-	return ((int )nb);
+	return TRUE;
 }
 
 int	parse_arg(t_data *data, char **arg) // handle the case of 0 at cold down be 0 :)
 {
 	int		i;
+	int		status;
 
 	i = 0;
 	while (++i < 8)
 	{
-		if (!costum_atoi(arg[i]))
+		if (costum_atoi(arg[i]) == -1)
 			return (FALSE);
 	}
 	if (strcmp(arg[i], "fifo") == 0)
@@ -64,6 +70,6 @@ int	parse_arg(t_data *data, char **arg) // handle the case of 0 at cold down be 
 		data->scheduler = EDF;
 	else
 		return (FALSE);
-	set_arg(arg, data);
-	return (TRUE);
+	status = set_arg(arg, data);
+	return (status);
 }

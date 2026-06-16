@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 17:56:07 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/13 14:46:26 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/16 10:47:18 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,6 @@ struct s_data
 
 // parsing stage
 int		parse_arg(t_data *data, char **arg);
-void	set_arg(char **arg, t_data *data);
 
 // time functions
 long	task_time(long time);
