@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 09:15:28 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/13 14:37:03 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/17 17:01:17 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	*semulation(void *co)
 	set_time(&coder->coder_mutex,
 		&coder->compile_start_t, coder->data->semulation_start);
 	if (coder->id % 2 == 0)
-		usleep(100);
+		usleep(1000);
 	dongle_order(coder, &f, &s);
 	while (!get_bool(&coder->data->stop, &coder->data->semulation_over))
 	{

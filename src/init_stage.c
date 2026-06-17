@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 17:55:54 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/13 14:38:33 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/17 10:07:41 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ static int	coders_init(t_data *data)
 			return (coder_mutex_destroy(data->coders, i), FALSE);
 		coder->id = i + 1;
 		coder->compile_c = 0;
-		coder->right_dongle = &data->dongles[i];
-		coder->left_dongle = &data->dongles[(i + 1) % data->coder_c];
+		coder->left_dongle = &data->dongles[i];
+		coder->right_dongle = &data->dongles[(i + 1) % data->coder_c];
 		coder->data = data;
 		coder->compile_start_t = 1;
 		coder->finish = FALSE;

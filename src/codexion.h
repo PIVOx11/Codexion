@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 17:56:07 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/16 10:47:18 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/17 17:40:17 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ typedef struct s_dongle
 	int			is_taken;
 	int			id;
 	t_data		*data;
-	int			heap_s;
+	int			heap_s; // heap size;
 
 }	t_dongle;
 

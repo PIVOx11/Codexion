@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 10:39:20 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/16 11:03:52 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/17 17:11:08 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	safe_sleep(t_coder *coder, int time)
 	{
 		if (ft_gettime() - start >= time)
 			break ;
-		usleep(500);
+		usleep(10);
 	}
 }
 
