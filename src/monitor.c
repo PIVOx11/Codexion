@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 21:12:48 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/13 14:27:39 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/18 12:24:05 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	*monitor(void *d)
 		}
 		if (is_simulation_over(data))
 			return (NULL);
-		usleep(200);
+		usleep(50);
 	}
 	return (NULL);
 }

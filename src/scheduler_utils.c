@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/01 10:24:29 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/17 17:37:45 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/18 12:12:58 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,6 @@ void	preorety(t_dongle *dongle)
 	s = &heap[1];
 	if (dongle->data->scheduler == EDF)
 	{
-		safe_print("swap happen", dongle->heap[0].coder);
-		safe_print("swap happen", dongle->heap[1].coder);
 		if (heap[0].dead_line > heap[1].dead_line)
 		{
 			heap[0] = *s;
