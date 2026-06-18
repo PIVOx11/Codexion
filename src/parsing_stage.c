@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 16:21:30 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/16 10:55:49 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/18 10:10:50 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,32 +28,30 @@ static int	set_arg(char **arg, t_data *data)
 	return TRUE;
 }
 
-static int	costum_atoi(char *s)
+static int	is_valid_number(char *s)
 {
 	int		i;
 	long	nb;
 
 	if (!s || !*s)
-		return (-1);
+		return FALSE;
 	nb = 0;
-	i = -1;
-	while (s[++i])
+	i = 0;
+	if (s[i] == '+' && s[i + 1])
+		i++;
+	while (s[i])
 	{
 		if (s[i] < '0' || s[i] > '9')
-		{
-			if (i == 0 && s[i] == '+')
-				continue ;
-			else
-				return (-1);
-		}
+			return FALSE;
 		nb = nb * 10 + s[i] - 48;
 		if (nb > INT_MAX)
-			return (-1);
+			return FALSE;
+		i++;
 	}
 	return TRUE;
 }
 
-int	parse_arg(t_data *data, char **arg) // handle the case of 0 at cold down be 0 :)
+int	parse_arg(t_data *data, char **arg)
 {
 	int		i;
 	int		status;
@@ -61,7 +59,7 @@ int	parse_arg(t_data *data, char **arg) // handle the case of 0 at cold down be 
 	i = 0;
 	while (++i < 8)
 	{
-		if (costum_atoi(arg[i]) == -1)
+		if (!is_valid_number(arg[i]))
 			return (FALSE);
 	}
 	if (strcmp(arg[i], "fifo") == 0)
