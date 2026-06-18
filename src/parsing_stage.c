@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 16:21:30 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/18 10:10:50 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/18 10:18:26 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,16 @@ static int	set_arg(char **arg, t_data *data)
 {
 	data->coder_c = atoi(arg[1]);
 	if (data->coder_c == 0)
-		return FALSE;
+		return (FALSE);
 	data->bornout_t = atoi(arg[2]);
 	data->compile_t = atoi(arg[3]);
 	data->debug_t = atoi(arg[4]);
 	data->refactor_t = atoi(arg[5]);
 	data->compile_r = atoi(arg[6]);
 	if (data->compile_r == 0)
-		return FALSE;
+		return (FALSE);
 	data->cold_down_t = atoi(arg[7]);
-	return TRUE;
+	return (TRUE);
 }
 
 static int	is_valid_number(char *s)
@@ -34,7 +34,7 @@ static int	is_valid_number(char *s)
 	long	nb;
 
 	if (!s || !*s)
-		return FALSE;
+		return (FALSE);
 	nb = 0;
 	i = 0;
 	if (s[i] == '+' && s[i + 1])
@@ -42,13 +42,13 @@ static int	is_valid_number(char *s)
 	while (s[i])
 	{
 		if (s[i] < '0' || s[i] > '9')
-			return FALSE;
+			return (FALSE);
 		nb = nb * 10 + s[i] - 48;
 		if (nb > INT_MAX)
-			return FALSE;
+			return (FALSE);
 		i++;
 	}
-	return TRUE;
+	return (TRUE);
 }
 
 int	parse_arg(t_data *data, char **arg)
