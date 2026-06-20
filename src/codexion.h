@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 17:56:07 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/17 17:40:17 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/19 14:40:33 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,9 @@
 # include <string.h>
 # include <stdio.h>
 # include <pthread.h>
-# include <time.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <sys/time.h>
-# include <unistd.h>
 # include <limits.h>
 
 # define FALSE 0
@@ -42,22 +40,20 @@ _r = required
 typedef struct s_request
 {
 	t_coder	*coder;
-	long	request_t;
 	long	dead_line;
 
 }	t_request;
 
 typedef struct s_dongle
 {
-	t_request	heap[2];
+	t_request	queue[2];
 	t_mutex		d_data;
 	t_cond		dongle_cond;
 	long		relais_t;
 	int			is_taken;
 	int			id;
 	t_data		*data;
-	int			heap_s; // heap size;
-
+	int			queue_s;
 }	t_dongle;
 
 typedef struct s_coder

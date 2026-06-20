@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 10:36:29 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/18 12:16:30 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/19 14:41:59 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,32 +33,25 @@ void	add_request(t_coder *coder, t_dongle *f, t_dongle *s)
 {
 	long	time;
 
-// 	printf(
-//     "%ld C%d requests D%d,D%d\n",
-//     ft_gettime() - coder->data->semulation_start,
-//     coder->id,
-//     f->id,
-//     s->id
-// );
 	pthread_mutex_lock(&f->d_data);
 	time = coder->compile_start_t;
-	f->heap[f->heap_s].coder = coder;
-	f->heap[f->heap_s].dead_line = time + coder->data->bornout_t;
-	f->heap_s++;
+	f->queue[f->queue_s].coder = coder;
+	f->queue[f->queue_s].dead_line = time + coder->data->bornout_t;
+	f->queue_s++;
 	preorety(f);
 	pthread_mutex_unlock(&f->d_data);
 	pthread_mutex_lock(&s->d_data);
 	time = coder->compile_start_t;
-	s->heap[s->heap_s].coder = coder;
-	s->heap[s->heap_s].dead_line = time + coder->data->bornout_t;
-	s->heap_s++;
+	s->queue[s->queue_s].coder = coder;
+	s->queue[s->queue_s].dead_line = time + coder->data->bornout_t;
+	s->queue_s++;
 	preorety(s);
 	pthread_mutex_unlock(&s->d_data);
 }
 
 int	try_take_dongle(t_dongle *dongle, t_coder *coder)
 {
-	if (dongle->is_taken || dongle->heap[0].coder != coder)
+	if (dongle->is_taken || dongle->queue[0].coder != coder)
 		return (FALSE);
 	return (TRUE);
 }

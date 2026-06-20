@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/01 10:24:29 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/18 12:12:58 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/19 16:05:19 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,35 +30,33 @@ void	remove_request(t_coder *coder, t_dongle *dongle)
 
 	pthread_mutex_lock(&dongle->d_data);
 	i = -1;
-	while (++i < dongle->heap_s)
+	while (++i < dongle->queue_s)
 	{
-		if (dongle->heap[i].coder == coder)
+		if (dongle->queue[i].coder == coder)
 		{
-			dongle->heap[i] = dongle->heap[1];
+			dongle->queue[i] = dongle->queue[1];
 			break ;
 		}
 	}
-	dongle->heap_s--;
+	dongle->queue_s--;
 	pthread_mutex_unlock(&dongle->d_data);
 }
 
 void	preorety(t_dongle *dongle)
 {
-	t_request	*heap;
 	t_request	*f;
 	t_request	*s;
 
-	if (dongle->heap_s != 2)
+	if (dongle->queue_s != 2)
 		return ;
-	heap = dongle->heap;
-	f = &heap[0];
-	s = &heap[1];
+	f = &dongle->queue[0];
+	s = &dongle->queue[1];
 	if (dongle->data->scheduler == EDF)
 	{
-		if (heap[0].dead_line > heap[1].dead_line)
+		if (dongle->queue[0].dead_line > dongle->queue[1].dead_line)
 		{
-			heap[0] = *s;
-			heap[1] = *f;
+			dongle->queue[0] = *s;
+			dongle->queue[1] = *f;
 		}
 	}
 }

@@ -4,8 +4,6 @@ CFLAGS = -Wall -Wextra -Werror -pthread
 
 NAME = codexion
 
-HEADER = src/codexion.h
-
 SRC = src/codexion.c \
 src/parsing_stage.c \
 src/init_stage.c \
@@ -25,7 +23,7 @@ all: $(NAME)
 $(NAME): $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
 
-%.o: %.c $(HEADER)
+%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:

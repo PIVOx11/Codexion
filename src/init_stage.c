@@ -6,7 +6,7 @@
 /*   By: blidriss <blidriss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/15 17:55:54 by blidriss          #+#    #+#             */
-/*   Updated: 2026/06/17 10:07:41 by blidriss         ###   ########.fr       */
+/*   Updated: 2026/06/19 14:40:53 by blidriss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static int	dongles_init(t_data *data)
 		dongle->id = i + 1;
 		dongle->relais_t = 1;
 		dongle->data = data;
-		dongle->heap_s = 0;
+		dongle->queue_s = 0;
 		dongle->is_taken = FALSE;
 		if (pthread_mutex_init(&dongle->d_data, NULL)
 			||pthread_cond_init(&dongle->dongle_cond, NULL))
